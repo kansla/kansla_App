@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidproject.R
 import com.github.nkzawa.emitter.Emitter
@@ -24,6 +25,7 @@ class ChattingActivity : AppCompatActivity() {
     internal lateinit var preferences: SharedPreferences
     private lateinit var chating_Text: EditText
     private lateinit var chat_Send_Button: Button
+    lateinit var chat_recyclerview : RecyclerView
 
 
     private var hasConnection: Boolean = false
@@ -44,7 +46,7 @@ class ChattingActivity : AppCompatActivity() {
 
         preferences = getSharedPreferences("USERSIGN", Context.MODE_PRIVATE)
 
-        val chat_recyclerview : RecyclerView = findViewById(R.id.recyclerview)
+        chat_recyclerview= findViewById(R.id.recyclerview)
 
         //어댑터 선언
         chat_recyclerview.adapter = mAdapter
@@ -94,6 +96,12 @@ class ChattingActivity : AppCompatActivity() {
             sendMessage()
 
         }
+        chat_recyclerview.post(Runnable { 
+            run(){
+                chat_recyclerview.scrollToPosition((chat_recyclerview.adapter as ChatAdapter).itemCount-1)
+                Log.e("호호","post")
+            }
+        })
     }
 
     internal var onNewMessage: Emitter.Listener = Emitter.Listener { args ->
@@ -114,6 +122,8 @@ class ChattingActivity : AppCompatActivity() {
                 val format = ChatModel(name, script, profile_image, date_time)
                 mAdapter.addItem(format)
                 mAdapter.notifyDataSetChanged()
+                // 메세지가 올라올때마다 스크롤 최하단으로 보내기
+                chat_recyclerview.scrollToPosition(((chat_recyclerview.adapter?.itemCount ?: Int) as Int) - 1)
                 Log.e("new me",name )
             } catch (e: Exception) {
                 return@Runnable
@@ -170,6 +180,6 @@ class ChattingActivity : AppCompatActivity() {
         }
         Log.e("챗룸", "sendMessage: 1" + mSocket.emit("chat message", jsonObject))
         //Log.e("sendmmm",preferences.getString("name", "") )
-
+        
     }
 }
