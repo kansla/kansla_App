@@ -1,4 +1,4 @@
-package com.example.androidproject.ui.Chatting
+package com.example.androidproject.ui.chatting
 
 import android.content.Context
 import android.content.SharedPreferences

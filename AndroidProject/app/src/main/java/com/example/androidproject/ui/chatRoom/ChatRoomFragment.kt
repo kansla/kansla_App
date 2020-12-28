@@ -1,4 +1,4 @@
-package com.example.androidproject.ui.dashboard
+package com.example.androidproject.ui.chatRoom
 
 import android.content.Context
 import android.content.Intent
@@ -12,12 +12,11 @@ import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.androidproject.R
-import androidx.appcompat.app.AppCompatActivity
-import com.example.androidproject.ui.Chatting.ChattingActivity
+import com.example.androidproject.ui.chatting.ChattingActivity
 
 class ChatRoomFragment : Fragment() {
 
-    private lateinit var dashboardViewModel: DashboardViewModel
+    private lateinit var dashboardViewModel: ChatRoomViewModel
 
     internal lateinit var preferences: SharedPreferences
 
@@ -27,7 +26,7 @@ class ChatRoomFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         dashboardViewModel =
-                ViewModelProvider(this).get(DashboardViewModel::class.java)
+                ViewModelProvider(this).get(ChatRoomViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_chat_room, container, false)
 
         preferences = activity?.getSharedPreferences("USERSIGN", Context.MODE_PRIVATE)!!

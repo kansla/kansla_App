@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.androidproject.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        android:name="com.example.androidproject.ui.friend.FriendFragment"
+        android:label="@string/title_friend"
+        tools:layout="@layout/fragment_friend" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.androidproject.ui.dashboard.ChatRoomFragment"
-        android:label="@string/title_dashboard"
+        android:name="com.example.androidproject.ui.chatRoom.ChatRoomFragment"
+        android:label="@string/title_chatting_room"
         tools:layout="@layout/fragment_chat_room" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.example.androidproject.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:name="com.example.androidproject.ui.setting.SettingFragment"
+        android:label="@string/title_setting"
+        tools:layout="@layout/fragment_setting" />
 </navigation>

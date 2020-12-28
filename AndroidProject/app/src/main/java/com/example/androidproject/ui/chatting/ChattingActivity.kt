@@ -1,4 +1,4 @@
-package com.example.androidproject.ui.Chatting
+package com.example.androidproject.ui.chatting
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -8,9 +8,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidproject.R
 import com.github.nkzawa.emitter.Emitter
