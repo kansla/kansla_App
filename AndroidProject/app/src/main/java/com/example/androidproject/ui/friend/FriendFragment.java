@@ -15,7 +15,18 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.androidproject.API.Posts;
+import com.example.androidproject.API.RetrofitAPI;
 import com.example.androidproject.R;
+
+import java.util.Arrays;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class FriendFragment extends Fragment {
     View view;
@@ -26,6 +37,8 @@ public class FriendFragment extends Fragment {
     int posi;
 
     private FriendViewModel friendViewModel;
+
+    private RetrofitAPI retrofitAPI;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -47,7 +60,34 @@ public class FriendFragment extends Fragment {
             }
         });
 
-        dataSetting();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://jsonplaceholder.typicode.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        RetrofitAPI service = retrofit.create(RetrofitAPI.class);
+        service.getPosts().enqueue(new Callback<Posts[]>() {
+            @Override
+            public void onResponse(Call<Posts[]> call, Response<Posts[]> response) {
+                if(response.isSuccessful()){
+                    List<Posts> data = Arrays.asList(response.body());
+                    Log.d("TAG_AN", "성공: "+data.get(0).getTitle());
+                    FriendAdapter adapter = new FriendAdapter();
+                    for(int i=1;i<=10;i++){
+                        adapter.addItem("title: "+data.get(i).getTitle(), "Contents: "+data.get(i).getBody());
+                    }
+                    listView.setAdapter(adapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Posts[]> call, Throwable t) {
+                Log.d("TAG_AN", "실패: "+t.getMessage().toString());
+            }
+        });
+
+
+        //dataSetting();
 
         return view;
     }
