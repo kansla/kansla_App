@@ -10,5 +10,7 @@ public class ManualActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual);
+
+        setTitle("도움말");
     }
 }

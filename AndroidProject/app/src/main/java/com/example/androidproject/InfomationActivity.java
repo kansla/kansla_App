@@ -17,6 +17,7 @@ public class InfomationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_infomation);
+        setTitle("정보");
 
         init();
 
