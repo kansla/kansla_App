@@ -12,7 +12,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.androidproject.InfomationActivity;
 import com.example.androidproject.MainActivity;
+import com.example.androidproject.ManualActivity;
 import com.example.androidproject.R;
 
 
@@ -45,10 +47,10 @@ public class SettingFragment extends Fragment implements View.OnClickListener{
         Intent intent = null;
         switch (v.getId()){
             case R.id.info:
-                intent = new Intent(getActivity(), MainActivity.class);
+                intent = new Intent(getActivity(), InfomationActivity.class);
                 break;
             case R.id.manual:
-                intent = new Intent(getActivity(), MainActivity.class);
+                intent = new Intent(getActivity(), ManualActivity.class);
                 break;
             default:
         }
