@@ -128,7 +128,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                     errId.setVisibility(View.GONE);
                     // 중복확인
                     Log.e("호호","이메일 맞아");
-                    editId.setClickable(false);
+                    editId.setEnabled(false);
 
                     if(true){
                         errId.setVisibility(View.GONE);
