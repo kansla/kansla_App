@@ -68,16 +68,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         @Override
                         public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
                             if(response.isSuccessful()){
-                                Toast.makeText(LoginActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                startActivity(intent);
-                                finish();
+                                int result = response.code();
+                                    if(result == 200) {
+                                        Toast.makeText(LoginActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                    else if(result == 204){
+                                        errPW.setVisibility(View.VISIBLE);
+                                        errPW.setText("아이디나 비밀번호가 일치하지 않습니다.");
+                                    }
                             }
                         }
 
                         @Override
                         public void onFailure(Call<UserDTO> call, Throwable t) {
-                            Log.e("실패", t.getMessage());
+                            Log.e("err","통신 안됨");
                         }
                     });
                 }

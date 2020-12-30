@@ -12,18 +12,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.androidproject.API.RetrofitHelper;
-import com.example.androidproject.API.UserAPI;
 import com.example.androidproject.DTO.UserDTO;
 
-import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener{
 
