@@ -2,11 +2,13 @@ package com.example.androidproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,13 +24,15 @@ import retrofit2.Response;
 
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener{
 
-    EditText editId, editPW, editRePW, editBirth, editName;
-    TextView errId, errPW, errRePW, errBirth;
+    EditText editId, editPW, editRePW, editName;
+    TextView errId, errPW, errRePW, errBirth, tvBirth;
     Button btnSignup, btnCheck;
 
     String strId, strPW, strRePW, strBirth, strName;
 
     boolean isAbleId = false;
+
+    int y=0, m=0, d=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
         btnSignup.setOnClickListener(this);
         btnCheck.setOnClickListener(this);
+        tvBirth.setOnClickListener(this);
 
     }
 
@@ -50,7 +55,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 strId = editId.getText().toString();
                 strPW = editPW.getText().toString();
                 strRePW = editRePW.getText().toString();
-                strBirth = editBirth.getText().toString();
+                strBirth = tvBirth.getText().toString();
                 strName = editName.getText().toString();
 
                 if(strId.equals("") || strPW.equals("") || strRePW.equals("") || strBirth.equals("")){
@@ -166,6 +171,36 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                     }
                 }
                 break;
+            case R.id.tvBirth:
+                DatePickerDialog datePickerDialog = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        y = year;
+                        m = month +1;
+                        d = dayOfMonth;
+
+                        if(m<10 && d<10){
+                            tvBirth.setText(y+"-0"+m+"-0"+d);
+                        }
+                        else if(m<10 && d>=10){
+                            tvBirth.setText(y+"-0"+m+"-"+d);
+                        }
+                        else if(m>=10 && d<10){
+                            tvBirth.setText(y+"-"+m+"-0"+d);
+                        }
+                        else{
+                            tvBirth.setText(y+"-"+m+"-"+d);
+                        }
+
+                    }
+                },y,m-1,d);
+
+                datePickerDialog.getDatePicker().setCalendarViewShown(false);
+                datePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                datePickerDialog.setMessage("생일을 선택해주세요");
+                datePickerDialog.setCancelable(false);
+                datePickerDialog.show();
+                break;
         }
     }
 
@@ -178,7 +213,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         editId = findViewById(R.id.editId);
         editPW = findViewById(R.id.editPW);
         editRePW =findViewById(R.id.editRePW);
-        editBirth = findViewById(R.id.editBirth);
+        tvBirth = findViewById(R.id.tvBirth);
         errId = findViewById(R.id.errId);
         errPW = findViewById(R.id.errPW);
         errRePW =findViewById(R.id.errRePW);
@@ -186,5 +221,9 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         btnSignup = findViewById(R.id.btnSignup);
         btnCheck = findViewById(R.id.btnCheck);
         editName = findViewById(R.id.editName);
+
+        y=2000;
+        m=1;
+        d=1;
     }
 }
