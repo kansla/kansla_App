@@ -1,11 +1,14 @@
 package com.example.androidproject.ui.setting;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,8 +26,11 @@ public class SettingFragment extends Fragment implements View.OnClickListener{
     View view;
 
     ImageView btnInfo, btnManual;
+    TextView tvName, tvContents;
 
     private SettingViewModel settingViewModel;
+
+    SharedPreferences auto;
 
     @Nullable
     @Override
@@ -35,9 +41,15 @@ public class SettingFragment extends Fragment implements View.OnClickListener{
 
         btnInfo = view.findViewById(R.id.info);
         btnManual = view.findViewById(R.id.manual);
+        tvName = view.findViewById(R.id.tvName);
+        tvContents = view.findViewById(R.id.tvContents);
 
         btnInfo.setOnClickListener(this);
         btnManual.setOnClickListener(this);
+
+        auto = this.getActivity().getSharedPreferences("auto", Activity.MODE_PRIVATE);
+        tvName.setText(auto.getString("inputName","null"));
+        tvContents.setText(auto.getString("inputContents","null"));
 
         return view;
     }

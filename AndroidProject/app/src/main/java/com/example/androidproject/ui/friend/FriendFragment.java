@@ -1,5 +1,7 @@
 package com.example.androidproject.ui.friend;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,9 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.androidproject.API.Posts;
@@ -40,12 +40,23 @@ public class FriendFragment extends Fragment {
 
     private RetrofitAPI retrofitAPI;
 
+    TextView tvName, tvContents;
+    SharedPreferences auto;
+    SharedPreferences.Editor editor;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         friendViewModel =
                 new ViewModelProvider(this).get(FriendViewModel.class);
         view = inflater.inflate(R.layout.fragment_friend, container, false);
         adapter = new FriendAdapter();
+
+        auto = this.getActivity().getSharedPreferences("auto", Activity.MODE_PRIVATE);
+
+        tvName = view.findViewById(R.id.name);
+        tvName.setText(auto.getString("inputName","null"));
+        tvContents = view.findViewById(R.id.contents);
+        tvContents.setText(auto.getString("inputContents","null"));
 
         listView = view.findViewById(R.id.listview);
 
@@ -91,6 +102,7 @@ public class FriendFragment extends Fragment {
 
         return view;
     }
+
 
     private void dataSetting() {
         FriendAdapter adapter = new FriendAdapter();

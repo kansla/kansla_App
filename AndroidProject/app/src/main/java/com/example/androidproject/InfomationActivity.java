@@ -2,7 +2,9 @@ package com.example.androidproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +15,8 @@ public class InfomationActivity extends AppCompatActivity {
     Button btnModify;
     TextView tvName, tvContents, tvEmail, tvPW, tvBirth;
 
+    SharedPreferences auto;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,11 +25,18 @@ public class InfomationActivity extends AppCompatActivity {
 
         init();
 
+        auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
+        tvName.setText(auto.getString("inputName","null"));
+        tvContents.setText(auto.getString("inputContents","null"));
+        tvEmail.setText(auto.getString("inputId","null"));
+        tvBirth.setText(auto.getString("inputBirth","null"));
+
         btnModify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), InfoModifyActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -37,11 +48,5 @@ public class InfomationActivity extends AppCompatActivity {
         tvEmail = findViewById(R.id.email);
         tvPW = findViewById(R.id.password);
         tvBirth = findViewById(R.id.birth);
-
-        tvName.setText("나다 문예원0");
-        tvContents.setText("항상 배고픔");
-        tvEmail.setText("gongju@gsm.hs.kr");
-        tvPW.setText("****");
-        tvBirth.setText("2003-04-10");
     }
 }

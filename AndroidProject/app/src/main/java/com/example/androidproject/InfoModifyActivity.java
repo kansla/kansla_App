@@ -5,9 +5,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -37,6 +40,9 @@ public class InfoModifyActivity extends AppCompatActivity implements View.OnClic
 
     int y=0, m=0, d=0;
 
+    SharedPreferences auto;
+    SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +54,7 @@ public class InfoModifyActivity extends AppCompatActivity implements View.OnClic
         btnSave.setOnClickListener(this);
         btnCheck.setOnClickListener(this);
         tvBirth.setOnClickListener(this);
+
     }
 
     @Override
@@ -60,13 +67,15 @@ public class InfoModifyActivity extends AppCompatActivity implements View.OnClic
                 strOrgPW = editOrgPW.getText().toString();
                 strNewPW = editNewPW.getText().toString();
 
+                auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
+
                 if(strName.equals("") || strContents.equals("") || strEmail.equals("") || strOrgPW.equals("") || strNewPW.equals("")){
                     Toast.makeText(this, "비어있는 칸이 없도록 채워주세요!", Toast.LENGTH_SHORT).show();
                 }
                 else if(!isAbleEmail){
                     Toast.makeText(this, "중복 확인을 해주세요.", Toast.LENGTH_SHORT).show();
                 }
-                else if(!strOrgPW.equals("asdf123456!!!!")){
+                else if(!strOrgPW.equals(auto.getString("inputPW","null"))){
                     Toast.makeText(this, "기존 비밀번호를 다시 확인해주세요.", Toast.LENGTH_SHORT).show();
                 }
                 else if(!Pattern.matches("^(?=.*\\d)(?=.*[~`!@#$%\\^&*()-])(?=.*[a-zA-Z]).{8,16}$", strNewPW)){
@@ -74,6 +83,17 @@ public class InfoModifyActivity extends AppCompatActivity implements View.OnClic
                 }
                 else {
                     // 바꾸자
+                    auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
+                    editor = auto.edit();
+                    editor.putString("inputName", strName);
+                    editor.putString("inputContents", strContents);
+                    editor.putString("inputId", strEmail);
+                    editor.putString("inputPW", strNewPW);
+                    editor.putString("inputBirth", tvBirth.getText().toString());
+                    editor.commit();
+
+                    Intent intent = new Intent(getApplicationContext(), InfomationActivity.class);
+                    startActivity(intent);
                     finish();
                 }
                 break;
@@ -142,6 +162,16 @@ public class InfoModifyActivity extends AppCompatActivity implements View.OnClic
         btnCheck = findViewById(R.id.btnCheck2);
 
         strOrgEmail = editEmail.getText().toString();
+
+        auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
+        strName = auto.getString("inputName","null");
+        strContents = auto.getString("inputContents","null");
+        strEmail = auto.getString("inputId","null");
+        tvBirth.setText(auto.getString("inputBirth","null"));
+
+        editName.setText(strName);
+        editContents.setText(strContents);
+        editEmail.setText(strEmail);
 
         y= Integer.parseInt(tvBirth.getText().toString().split("-")[0]);
         m= Integer.parseInt(tvBirth.getText().toString().split("-")[1]);

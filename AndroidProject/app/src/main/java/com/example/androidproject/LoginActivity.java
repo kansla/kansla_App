@@ -2,7 +2,9 @@ package com.example.androidproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,11 +28,50 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     String strId, strPW;
 
+    SharedPreferences auto;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setTitle("로그인");
+
+        auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
+        strId = auto.getString("inputId", null);
+        strPW = auto.getString("inputPW",null);
+
+        //null이 아니면 자동로그인
+        if(strId !=null && strPW!=null){
+            UserDTO user = getData();
+            Call<UserDTO> call = RetrofitHelper.getApiService().login(user);
+            call.enqueue(new Callback<UserDTO>() {
+                @Override
+                public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
+                    if(response.isSuccessful()){
+                        int result = response.code();
+                        if(result == 200) {
+                            Toast.makeText(LoginActivity.this, "자동 로그인 성공", Toast.LENGTH_SHORT).show();
+
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                        else if(result == 204){
+                            errPW.setVisibility(View.VISIBLE);
+                            errPW.setText("아이디나 비밀번호가 일치하지 않습니다.");
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<UserDTO> call, Throwable t) {
+                    Log.e("err","통신 안됨");
+                }
+            });
+        }
+        else if(strId == null && strPW == null){
+
+        }
 
         init();
     }
@@ -62,6 +103,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     errPW.setVisibility(View.GONE);
                     errId.setVisibility(View.GONE);
                     // 로그인 확인하기
+
                     UserDTO user = getData();
                     Call<UserDTO> call = RetrofitHelper.getApiService().login(user);
                     call.enqueue(new Callback<UserDTO>() {
@@ -70,7 +112,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             if(response.isSuccessful()){
                                 int result = response.code();
                                     if(result == 200) {
-                                        Toast.makeText(LoginActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(LoginActivity.this, "자동 로그인 등록", Toast.LENGTH_SHORT).show();
+                                        
+                                        auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
+                                        SharedPreferences.Editor autoLogin = auto.edit();
+                                        autoLogin.putString("inputId", strId);
+                                        autoLogin.putString("inputPW", strPW);
+                                        autoLogin.putString("inputName", response.body().getName());
+                                        autoLogin.putString("inputBirth",response.body().getBirth());
+                                        autoLogin.putString("inputContents", "항상 배고픔");
+                                        Log.e("getName", response.body().getName());
+                                        autoLogin.commit();
+                                        
                                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                         startActivity(intent);
                                         finish();
