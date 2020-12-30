@@ -12,16 +12,4 @@ import retrofit2.http.POST;
 public interface RetrofitAPI {
     @GET("/posts/")
     Call<Posts[]> getPosts();
-    @POST("posts")
-    Call<Posts> createPost(@Body Posts posts);
-    /*@FormUrlEncoded
-    @POST("Posts")
-    Call<Posts> createPost(
-            @Field("userId") int userId,
-            @Field("title") String title,
-            @Field("body") String text
-    );*/
-    @FormUrlEncoded
-    @POST("Posts")
-    Call<Posts> createPost(@FieldMap Map<String, String> fields);
 }
