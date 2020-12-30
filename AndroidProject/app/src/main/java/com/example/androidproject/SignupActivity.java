@@ -11,16 +11,27 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.androidproject.API.RetrofitHelper;
+import com.example.androidproject.API.UserAPI;
+import com.example.androidproject.DTO.UserDTO;
+
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener{
 
-    EditText editId, editPW, editRePW, editBirth;
+    EditText editId, editPW, editRePW, editBirth, editName;
     TextView errId, errPW, errRePW, errBirth;
     Button btnSignup, btnCheck;
 
-    String strId, strPW, strRePW, strBirth;
+    String strId, strPW, strRePW, strBirth, strName;
 
     boolean isAbleId = false;
 
@@ -45,6 +56,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 strPW = editPW.getText().toString();
                 strRePW = editRePW.getText().toString();
                 strBirth = editBirth.getText().toString();
+                strName = editName.getText().toString();
 
                 if(strId.equals("") || strPW.equals("") || strRePW.equals("") || strBirth.equals("")){
                     if(strId.equals("")){
@@ -105,10 +117,27 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                         errPW.setVisibility(View.GONE);
                         errBirth.setVisibility(View.GONE);
                         //회원가입 하기
-                        Toast.makeText(this, "회원가입 성공", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent);
-                        finish();
+
+                        UserDTO user = getData();
+                        Call<UserDTO> call = RetrofitHelper.getApiService().signup(user);
+                        call.enqueue(new Callback<UserDTO>() {
+                            @Override
+                            public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
+                                if(response.isSuccessful()){
+                                    Toast.makeText(SignupActivity.this, "회원가입 성공", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<UserDTO> call, Throwable t) {
+                                Log.e("실패", t.getMessage());
+                            }
+                        });
+
+
                     }
                 }
                 break;
@@ -145,6 +174,11 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    private UserDTO getData() {
+        UserDTO data = new UserDTO(strId, strPW, strName, strBirth);
+        return data;
+    }
+
     void init(){
         editId = findViewById(R.id.editId);
         editPW = findViewById(R.id.editPW);
@@ -156,5 +190,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         errBirth = findViewById(R.id.errBirth);
         btnSignup = findViewById(R.id.btnSignup);
         btnCheck = findViewById(R.id.btnCheck);
+        editName = findViewById(R.id.editName);
     }
 }

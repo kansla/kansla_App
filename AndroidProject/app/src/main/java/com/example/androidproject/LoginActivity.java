@@ -4,10 +4,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.androidproject.API.RetrofitHelper;
+import com.example.androidproject.DTO.UserDTO;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -53,13 +62,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     errPW.setVisibility(View.GONE);
                     errId.setVisibility(View.GONE);
                     // 로그인 확인하기
-                    if(true){
-                        Intent intent2 = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent2);
-                    }
+                    UserDTO user = getData();
+                    Call<UserDTO> call = RetrofitHelper.getApiService().login(user);
+                    call.enqueue(new Callback<UserDTO>() {
+                        @Override
+                        public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
+                            if(response.isSuccessful()){
+                                Toast.makeText(LoginActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<UserDTO> call, Throwable t) {
+                            Log.e("실패", t.getMessage());
+                        }
+                    });
                 }
                 break;
         }
+    }
+    private UserDTO getData() {
+        UserDTO data = new UserDTO(strId, strPW);
+        return data;
     }
 
     void init(){
