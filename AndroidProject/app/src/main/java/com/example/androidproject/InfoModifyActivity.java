@@ -160,6 +160,7 @@ public class InfoModifyActivity extends AppCompatActivity implements View.OnClic
                 }
                 else if(strEmail.equals(strOrgEmail)){
                     Toast.makeText(this, "기존 이메일을 사용합니다.", Toast.LENGTH_SHORT).show();
+                    strOrgEmail = strEmail;
                     editEmail.setEnabled(false);
                     isAbleEmail = true;
                 }
@@ -197,8 +198,10 @@ public class InfoModifyActivity extends AppCompatActivity implements View.OnClic
 
     private UserModifyDTO getData() {
         auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
-        UserModifyDTO data = new UserModifyDTO(auto.getString("inputID","null"),
+        UserModifyDTO data = new UserModifyDTO(strOrgEmail,
                 strEmail, strName, strNewPW, tvBirth.getText().toString(), "", strContents);
+
+        Log.e("log", data.toString());
 
         return data;
     }

@@ -25,12 +25,6 @@ public class InfomationActivity extends AppCompatActivity {
 
         init();
 
-        auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
-        tvName.setText(auto.getString("inputName","null"));
-        tvContents.setText(auto.getString("inputContents","null"));
-        tvEmail.setText(auto.getString("inputId","null"));
-        tvBirth.setText(auto.getString("inputBirth","null"));
-
         btnModify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,5 +42,11 @@ public class InfomationActivity extends AppCompatActivity {
         tvEmail = findViewById(R.id.email);
         tvPW = findViewById(R.id.password);
         tvBirth = findViewById(R.id.birth);
+
+        auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
+        tvName.setText(auto.getString("inputName","null"));
+        tvContents.setText(auto.getString("inputContents","null"));
+        tvEmail.setText(auto.getString("inputId","null"));
+        tvBirth.setText(auto.getString("inputBirth","null").substring(0,10));
     }
 }
