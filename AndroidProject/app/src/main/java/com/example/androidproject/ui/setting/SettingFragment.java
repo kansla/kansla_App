@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,8 +17,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.androidproject.InfomationActivity;
-import com.example.androidproject.MainActivity;
 import com.example.androidproject.ManualActivity;
+import com.example.androidproject.CustomDialogFragment;
 import com.example.androidproject.R;
 
 
@@ -27,6 +28,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener{
 
     ImageView btnInfo, btnManual;
     TextView tvName, tvContents;
+    Button btnLogout;
 
     private SettingViewModel settingViewModel;
 
@@ -39,13 +41,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener{
                 new ViewModelProvider(this).get(SettingViewModel.class);
         view = inflater.inflate(R.layout.fragment_setting, container, false);
 
-        btnInfo = view.findViewById(R.id.info);
-        btnManual = view.findViewById(R.id.manual);
-        tvName = view.findViewById(R.id.tvName);
-        tvContents = view.findViewById(R.id.tvContents);
-
-        btnInfo.setOnClickListener(this);
-        btnManual.setOnClickListener(this);
+        init();
 
         auto = this.getActivity().getSharedPreferences("auto", Activity.MODE_PRIVATE);
         tvName.setText(auto.getString("inputName","null"));
@@ -60,12 +56,32 @@ public class SettingFragment extends Fragment implements View.OnClickListener{
         switch (v.getId()){
             case R.id.info:
                 intent = new Intent(getActivity(), InfomationActivity.class);
+                startActivity(intent);
                 break;
             case R.id.manual:
                 intent = new Intent(getActivity(), ManualActivity.class);
+                startActivity(intent);
                 break;
-            default:
+            case R.id.btnLogout:
+                dialogShow();
+                break;
         }
-        startActivity(intent);
+    }
+
+    private void dialogShow() {
+        CustomDialogFragment dialog = CustomDialogFragment.newInstance("로그아웃 하시겠습니까?");
+        dialog.show(getFragmentManager(), "dialog");
+    }
+
+    private void init() {
+        btnInfo = view.findViewById(R.id.info);
+        btnManual = view.findViewById(R.id.manual);
+        tvName = view.findViewById(R.id.tvName);
+        tvContents = view.findViewById(R.id.tvContents);
+        btnLogout = view.findViewById(R.id.btnLogout);
+
+        btnInfo.setOnClickListener(this);
+        btnManual.setOnClickListener(this);
+        btnLogout.setOnClickListener(this);
     }
 }
