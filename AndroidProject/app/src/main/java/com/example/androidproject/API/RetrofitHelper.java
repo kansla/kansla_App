@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitHelper {
 
-    private static final String API_URL="http://da7b4d5a5bb9.ngrok.io/";
+    private static final String API_URL="http://b1ac0398a1eb.ngrok.io/";
     public static UserAPI getApiService(){return  getInstance().create(UserAPI.class);}
 
     private static Retrofit getInstance() {

@@ -11,10 +11,13 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.TypefaceSpan;
+import android.util.Base64;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -34,6 +37,8 @@ import com.example.androidproject.DTO.ResponseLogin;
 import com.example.androidproject.DTO.UserDTO;
 import com.example.androidproject.DTO.UserModifyDTO;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.regex.Pattern;
 
 import retrofit2.Call;
@@ -47,7 +52,7 @@ public class InfoModifyActivity extends AppCompatActivity implements View.OnClic
     Button btnSave, btnCheck;
     ImageView profile;
 
-    String strName, strContents, strEmail, strOrgPW, strNewPW, strOrgEmail;
+    String strName, strContents, strEmail, strOrgPW, strNewPW, strOrgEmail, strImage;
     boolean isAbleEmail = false;
 
     int y=0, m=0, d=0;
@@ -95,6 +100,9 @@ public class InfoModifyActivity extends AppCompatActivity implements View.OnClic
                 }
                 else {
                     // 바꾸자
+                    auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
+                    strImage = auto.getString("inputBase64", "null");
+
                     UserModifyDTO user = getData();
                     Call<UserModifyDTO> call = RetrofitHelper.getApiService().modify(user);
                     call.enqueue(new Callback<UserModifyDTO>() {
@@ -201,7 +209,7 @@ public class InfoModifyActivity extends AppCompatActivity implements View.OnClic
     private UserModifyDTO getData() {
         auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
         UserModifyDTO data = new UserModifyDTO(strOrgEmail,
-                strEmail, strName, strNewPW, tvBirth.getText().toString(), "", strContents);
+                strEmail, strName, strNewPW, tvBirth.getText().toString(), strImage, strContents);
 
         Log.e("log", data.toString());
 
@@ -224,6 +232,11 @@ public class InfoModifyActivity extends AppCompatActivity implements View.OnClic
         strContents = auto.getString("inputContents","null");
         strOrgEmail = auto.getString("inputId","null");
         tvBirth.setText(auto.getString("inputBirth","null").substring(0,10));
+
+        Log.e("base64", auto.getString("inputBase64", "null"));
+        ByteArrayInputStream bais = new ByteArrayInputStream(Base64.decode(auto.getString("inputBase64", "null"), Base64.NO_WRAP));
+        Bitmap bitmap = BitmapFactory.decodeStream(bais);
+        profile.setImageBitmap(bitmap);
 
         editName.setText(strName);
         editContents.setText(strContents);

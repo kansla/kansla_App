@@ -38,6 +38,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     SharedPreferences auto;
 
+    String base64;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,8 +134,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         autoLogin.putString("inputContents", response.body().getStatus_msg());
 
                                         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                                        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.user);
-                                        bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                                        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.klogo2);
+
+                                        bm.compress(Bitmap.CompressFormat.PNG, 40, baos);
+
                                         byte[] bImage = baos.toByteArray();
                                         String base64 = Base64.encodeToString(bImage,0);
 

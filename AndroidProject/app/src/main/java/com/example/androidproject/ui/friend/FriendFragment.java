@@ -83,7 +83,7 @@ public class FriendFragment extends Fragment {
 
             @Override
             public void onFailure(Call<FriendsDTO> call, Throwable t) {
-                Log.e("err", "통신 안됨: "+t.getMessage());
+                Log.e("errFriend", "통신 안됨: "+t.getMessage());
             }
         });
 
