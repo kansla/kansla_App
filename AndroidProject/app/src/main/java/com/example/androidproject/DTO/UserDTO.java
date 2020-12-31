@@ -37,6 +37,10 @@ public class UserDTO {
         this.pwd = pwd;
     }
 
+    public UserDTO(String email) {
+        this.email = email;
+    }
+
     public String getImage() {
         return image;
     }

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.androidproject.API.RetrofitHelper;
+import com.example.androidproject.DTO.ResponseLogin;
 import com.example.androidproject.DTO.UserDTO;
 
 import java.util.regex.Pattern;
@@ -159,18 +160,31 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 else{
                     errId.setVisibility(View.GONE);
                     // 중복확인
-                    Log.e("호호","이메일 맞아");
-                    editId.setEnabled(false);
+                    UserDTO user = new UserDTO(strId);
+                    Call<UserDTO> call = RetrofitHelper.getApiService().check_email(user);
+                    call.enqueue(new Callback<UserDTO>() {
+                        @Override
+                        public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
+                            if(response.isSuccessful()){
+                                int result = response.code();
+                                if(result == 200){
+                                    errId.setVisibility(View.GONE);
+                                    Toast.makeText(getApplicationContext(), strId+"는 사용가능한 아이디 입니다.", Toast.LENGTH_SHORT).show();
+                                    editId.setEnabled(false);
+                                    isAbleId = true;
+                                }
+                                else if(result == 204){
+                                    errId.setText("중복되는 아이디 입니다.");
+                                    errId.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        }
 
-                    if(true){
-                        errId.setVisibility(View.GONE);
-                        Toast.makeText(this, strId+"는 사용가능한 아이디 입니다.", Toast.LENGTH_SHORT).show();
-                        isAbleId = true;
-                    }
-                    else{
-                        errId.setText("중복되는 아이디 입니다.");
-                        errId.setVisibility(View.VISIBLE);
-                    }
+                        @Override
+                        public void onFailure(Call<UserDTO> call, Throwable t) {
+                            Log.e("err", "통신 안됨: "+t.getMessage());
+                        }
+                    });
                 }
                 break;
             case R.id.tvBirth:

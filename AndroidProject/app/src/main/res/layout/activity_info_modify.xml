@@ -84,7 +84,7 @@
             android:layout_marginTop="8dp"
             android:backgroundTint="@color/main_color"
             android:fontFamily="@font/appleneom"
-            android:text="gongju@gsm.hs.kr"
+            android:hint="이메일을 입력해 주세요"
             android:textSize="15dp"
             app:layout_constraintEnd_toStartOf="@+id/btnCheck2"
             app:layout_constraintStart_toStartOf="parent"

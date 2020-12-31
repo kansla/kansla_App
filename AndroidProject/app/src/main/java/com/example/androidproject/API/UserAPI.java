@@ -16,4 +16,6 @@ public interface UserAPI {
     Call<ResponseLogin> login(@Body UserDTO userDTO);
     @POST("/modify")
     Call<UserModifyDTO> modify(@Body UserModifyDTO userModifyDTO);
+    @POST("/register/check_email")
+    Call<UserDTO> check_email(@Body UserDTO userDTO);
 }

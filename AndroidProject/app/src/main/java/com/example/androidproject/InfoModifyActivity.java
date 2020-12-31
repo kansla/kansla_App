@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.example.androidproject.API.RetrofitHelper;
 import com.example.androidproject.DTO.ResponseLogin;
+import com.example.androidproject.DTO.UserDTO;
 import com.example.androidproject.DTO.UserModifyDTO;
 
 import java.util.regex.Pattern;
@@ -166,11 +167,29 @@ public class InfoModifyActivity extends AppCompatActivity implements View.OnClic
                     Toast.makeText(this, "이메일 형식으로 작성해주세요.", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    if(true){
-                        editEmail.setEnabled(false);
-                        isAbleEmail = true;
-                        Toast.makeText(this, "중복 확인 완료", Toast.LENGTH_SHORT).show();
-                    }
+                    UserDTO user = new UserDTO(strEmail);
+                    Call<UserDTO> call = RetrofitHelper.getApiService().check_email(user);
+                    call.enqueue(new Callback<UserDTO>() {
+                        @Override
+                        public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
+                            if(response.isSuccessful()){
+                                int result = response.code();
+                                if(result == 200){
+                                    Toast.makeText(InfoModifyActivity.this, strEmail+"는 사용가능한 아이디 입니다.", Toast.LENGTH_SHORT).show();
+                                    editEmail.setEnabled(false);
+                                    isAbleEmail = true;
+                                }
+                                else if(result == 204){
+                                    Toast.makeText(InfoModifyActivity.this, "중복되는 이메일 입니다.", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<UserDTO> call, Throwable t) {
+                            Log.e("err", "통신 안됨: "+t.getMessage());
+                        }
+                    });
                 }
                 break;
         }
@@ -194,20 +213,19 @@ public class InfoModifyActivity extends AppCompatActivity implements View.OnClic
         btnSave = findViewById(R.id.btnSave);
         btnCheck = findViewById(R.id.btnCheck2);
 
-        strOrgEmail = editEmail.getText().toString();
-
         auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
         strName = auto.getString("inputName","null");
         strContents = auto.getString("inputContents","null");
-        strEmail = auto.getString("inputId","null");
+        strOrgEmail = auto.getString("inputId","null");
         tvBirth.setText(auto.getString("inputBirth","null").substring(0,10));
 
         editName.setText(strName);
         editContents.setText(strContents);
-        editEmail.setText(strEmail);
+        editEmail.setText(strOrgEmail);
 
         y= Integer.parseInt(tvBirth.getText().toString().split("-")[0]);
         m= Integer.parseInt(tvBirth.getText().toString().split("-")[1]);
         d= Integer.parseInt(tvBirth.getText().toString().split("-")[2]);
+
     }
 }
