@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.TypefaceSpan;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -27,7 +28,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.androidproject.API.RetrofitHelper;
+import com.example.androidproject.DTO.ResponseLogin;
+import com.example.androidproject.DTO.UserModifyDTO;
+
 import java.util.regex.Pattern;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class InfoModifyActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -83,18 +92,34 @@ public class InfoModifyActivity extends AppCompatActivity implements View.OnClic
                 }
                 else {
                     // 바꾸자
-                    auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
-                    editor = auto.edit();
-                    editor.putString("inputName", strName);
-                    editor.putString("inputContents", strContents);
-                    editor.putString("inputId", strEmail);
-                    editor.putString("inputPW", strNewPW);
-                    editor.putString("inputBirth", tvBirth.getText().toString());
-                    editor.commit();
+                    UserModifyDTO user = getData();
+                    Call<UserModifyDTO> call = RetrofitHelper.getApiService().modify(user);
+                    call.enqueue(new Callback<UserModifyDTO>() {
+                        @Override
+                        public void onResponse(Call<UserModifyDTO> call, Response<UserModifyDTO> response) {
+                            if(response.isSuccessful()){
+                                Toast.makeText(InfoModifyActivity.this, "정보 수정 완료", Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(getApplicationContext(), InfomationActivity.class);
-                    startActivity(intent);
-                    finish();
+                                auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
+                                editor = auto.edit();
+                                editor.putString("inputName", strName);
+                                editor.putString("inputContents", strContents);
+                                editor.putString("inputId", strEmail);
+                                editor.putString("inputPW", strNewPW);
+                                editor.putString("inputBirth", tvBirth.getText().toString());
+                                editor.commit();
+
+                                Intent intent = new Intent(getApplicationContext(), InfomationActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<UserModifyDTO> call, Throwable t) {
+                            Log.e("err","통신 안됨"+t.getMessage());
+                        }
+                    });
                 }
                 break;
             case R.id.birth:
@@ -151,6 +176,14 @@ public class InfoModifyActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    private UserModifyDTO getData() {
+        auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
+        UserModifyDTO data = new UserModifyDTO(auto.getString("inputID","null"),
+                strEmail, strName, strNewPW, tvBirth.getText().toString(), "", strContents);
+
+        return data;
+    }
+
     private void init() {
         editName = findViewById(R.id.name);
         editContents = findViewById(R.id.contents);
@@ -167,7 +200,7 @@ public class InfoModifyActivity extends AppCompatActivity implements View.OnClic
         strName = auto.getString("inputName","null");
         strContents = auto.getString("inputContents","null");
         strEmail = auto.getString("inputId","null");
-        tvBirth.setText(auto.getString("inputBirth","null"));
+        tvBirth.setText(auto.getString("inputBirth","null").substring(0,10));
 
         editName.setText(strName);
         editContents.setText(strContents);
