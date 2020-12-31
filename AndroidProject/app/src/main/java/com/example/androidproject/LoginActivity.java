@@ -14,8 +14,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.androidproject.API.RetrofitHelper;
+import com.example.androidproject.DTO.ResponseLogin;
 import com.example.androidproject.DTO.UserDTO;
 
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -43,15 +47,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //null이 아니면 자동로그인
         if(strId !=null && strPW!=null){
             UserDTO user = getData();
-            Call<UserDTO> call = RetrofitHelper.getApiService().login(user);
-            call.enqueue(new Callback<UserDTO>() {
+            Call<ResponseLogin> call = RetrofitHelper.getApiService().login(user);
+            call.enqueue(new Callback<ResponseLogin>() {
                 @Override
-                public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
+                public void onResponse(Call<ResponseLogin> call, Response<ResponseLogin> response) {
                     if(response.isSuccessful()){
                         int result = response.code();
                         if(result == 200) {
                             Toast.makeText(LoginActivity.this, "자동 로그인 성공", Toast.LENGTH_SHORT).show();
-
+                            Log.e("getName", response.body().toString());
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(intent);
                             finish();
@@ -63,9 +67,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }
                 }
 
+
                 @Override
-                public void onFailure(Call<UserDTO> call, Throwable t) {
-                    Log.e("err","통신 안됨");
+                public void onFailure(Call<ResponseLogin> call, Throwable t) {
+                    Log.e("err","통신 안됨: "+t.getMessage());
                 }
             });
         }
@@ -105,10 +110,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     // 로그인 확인하기
 
                     UserDTO user = getData();
-                    Call<UserDTO> call = RetrofitHelper.getApiService().login(user);
-                    call.enqueue(new Callback<UserDTO>() {
+                    Call<ResponseLogin> call = RetrofitHelper.getApiService().login(user);
+                    call.enqueue(new Callback<ResponseLogin>() {
                         @Override
-                        public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
+                        public void onResponse(Call<ResponseLogin> call, Response<ResponseLogin> response) {
                             if(response.isSuccessful()){
                                 int result = response.code();
                                     if(result == 200) {
@@ -120,8 +125,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         autoLogin.putString("inputPW", strPW);
                                         autoLogin.putString("inputName", response.body().getName());
                                         autoLogin.putString("inputBirth",response.body().getBirth());
-                                        autoLogin.putString("inputContents", "항상 배고픔");
-                                        Log.e("getName", response.body().getName());
+                                        autoLogin.putString("inputContents", response.body().getStatus_msg());
+                                        Log.e("getName", response.body().toString());
                                         autoLogin.commit();
                                         
                                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -136,7 +141,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         }
 
                         @Override
-                        public void onFailure(Call<UserDTO> call, Throwable t) {
+                        public void onFailure(Call<ResponseLogin> call, Throwable t) {
                             Log.e("err","통신 안됨");
                         }
                     });

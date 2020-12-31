@@ -11,6 +11,19 @@ public class UserDTO {
     private String name;
     @SerializedName("birth")
     private String birth;
+    @SerializedName("status_msg")
+    private String status_msg;
+    @SerializedName("image")
+    private String image;
+
+    public UserDTO(String email, String pwd, String name, String birth, String status_msg, String image) {
+        this.email = email;
+        this.pwd = pwd;
+        this.name = name;
+        this.birth = birth;
+        this.status_msg = status_msg;
+        this.image = image;
+    }
 
     public UserDTO(String email, String pwd, String name, String birth) {
         this.email = email;
@@ -22,6 +35,22 @@ public class UserDTO {
     public UserDTO(String email, String pwd) {
         this.email = email;
         this.pwd = pwd;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getStatus_msg() {
+        return status_msg;
+    }
+
+    public void setStatus_msg(String status_msg) {
+        this.status_msg = status_msg;
     }
 
     public String getEmail() {
