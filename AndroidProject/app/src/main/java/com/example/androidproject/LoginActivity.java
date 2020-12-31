@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +20,7 @@ import com.example.androidproject.API.RetrofitHelper;
 import com.example.androidproject.DTO.ResponseLogin;
 import com.example.androidproject.DTO.UserDTO;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import okhttp3.ResponseBody;
@@ -126,6 +130,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         autoLogin.putString("inputName", response.body().getName());
                                         autoLogin.putString("inputBirth",response.body().getBirth());
                                         autoLogin.putString("inputContents", response.body().getStatus_msg());
+
+                                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.user);
+                                        bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                                        byte[] bImage = baos.toByteArray();
+                                        String base64 = Base64.encodeToString(bImage,0);
+
+                                        autoLogin.putString("inputBase64", base64);
                                         Log.e("getName", response.body().toString());
                                         autoLogin.commit();
                                         

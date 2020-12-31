@@ -24,6 +24,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +45,7 @@ public class InfoModifyActivity extends AppCompatActivity implements View.OnClic
     EditText editName, editContents, editEmail, editOrgPW, editNewPW;
     TextView tvBirth;
     Button btnSave, btnCheck;
+    ImageView profile;
 
     String strName, strContents, strEmail, strOrgPW, strNewPW, strOrgEmail;
     boolean isAbleEmail = false;
@@ -215,6 +217,7 @@ public class InfoModifyActivity extends AppCompatActivity implements View.OnClic
         tvBirth = findViewById(R.id.birth);
         btnSave = findViewById(R.id.btnSave);
         btnCheck = findViewById(R.id.btnCheck2);
+        profile = findViewById(R.id.image);
 
         auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
         strName = auto.getString("inputName","null");

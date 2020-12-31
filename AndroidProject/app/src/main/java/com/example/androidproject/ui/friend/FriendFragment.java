@@ -15,18 +15,13 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.androidproject.API.Posts;
-import com.example.androidproject.API.RetrofitAPI;
+import com.example.androidproject.API.RetrofitHelper;
+import com.example.androidproject.DTO.FriendsDTO;
 import com.example.androidproject.R;
-
-import java.util.Arrays;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class FriendFragment extends Fragment {
     View view;
@@ -38,11 +33,9 @@ public class FriendFragment extends Fragment {
 
     private FriendViewModel friendViewModel;
 
-    private RetrofitAPI retrofitAPI;
-
+    String email;
     TextView tvName, tvContents;
     SharedPreferences auto;
-    SharedPreferences.Editor editor;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -57,6 +50,7 @@ public class FriendFragment extends Fragment {
         tvName.setText(auto.getString("inputName","null"));
         tvContents = view.findViewById(R.id.contents);
         tvContents.setText(auto.getString("inputContents","null"));
+        email = auto.getString("inputId", "null");
 
         listView = view.findViewById(R.id.listview);
 
@@ -71,45 +65,29 @@ public class FriendFragment extends Fragment {
             }
         });
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://jsonplaceholder.typicode.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        RetrofitAPI service = retrofit.create(RetrofitAPI.class);
-        service.getPosts().enqueue(new Callback<Posts[]>() {
+        FriendsDTO user = new FriendsDTO(email);
+        Call<FriendsDTO> call = RetrofitHelper.getApiService().friend_list(user);
+        call.enqueue(new Callback<FriendsDTO>() {
             @Override
-            public void onResponse(Call<Posts[]> call, Response<Posts[]> response) {
-                if(response.isSuccessful()){
-                    List<Posts> data = Arrays.asList(response.body());
-                    Log.d("TAG_AN", "성공: "+data.get(0).getTitle());
-                    FriendAdapter adapter = new FriendAdapter();
-                    for(int i=1;i<=10;i++){
-                        adapter.addItem("title: "+data.get(i).getTitle(), "Contents: "+data.get(i).getBody());
-                    }
-                    listView.setAdapter(adapter);
+            public void onResponse(Call<FriendsDTO> call, Response<FriendsDTO> response) {
+                FriendsDTO result = response.body();
+
+                adapter.clearItem();
+
+                for (int i=0; i<result.getCount(); i++){
+                    adapter.addItem(result.getFriends().get(i).getName(), result.getFriends().get(i).getStatus_msg());
                 }
+                listView.setAdapter(adapter);
+
             }
 
             @Override
-            public void onFailure(Call<Posts[]> call, Throwable t) {
-                Log.d("TAG_AN", "실패: "+t.getMessage().toString());
+            public void onFailure(Call<FriendsDTO> call, Throwable t) {
+                Log.e("err", "통신 안됨: "+t.getMessage());
             }
         });
-
-
-        //dataSetting();
 
         return view;
     }
 
-
-    private void dataSetting() {
-        FriendAdapter adapter = new FriendAdapter();
-
-        for(int i =0; i<20; i++){
-            adapter.addItem("문예원"+i, "공쥬");
-        }
-        listView.setAdapter(adapter);
-    }
 }

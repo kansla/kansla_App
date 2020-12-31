@@ -68,4 +68,8 @@ public class FriendAdapter extends BaseAdapter {
 
         friendItemArrayList.add(item);
     }
+
+    public void clearItem(){
+        friendItemArrayList.clear();
+    }
 }

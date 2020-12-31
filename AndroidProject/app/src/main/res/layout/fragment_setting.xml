@@ -18,7 +18,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/circleImageView"
+        android:id="@+id/image"
         android:layout_width="135dp"
         android:layout_height="135dp"
         android:layout_marginTop="150dp"
@@ -38,7 +38,7 @@
         android:fontFamily="@font/appleneob"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/circleImageView" />
+        app:layout_constraintTop_toBottomOf="@+id/image" />
 
     <TextView
         android:id="@+id/tvContents"
