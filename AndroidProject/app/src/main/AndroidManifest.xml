@@ -16,6 +16,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:configChanges = "orientation|screenSize"
         android:theme="@style/Theme.AndroidProject"
         android:usesCleartextTraffic="true">
         <activity android:name=".SignupActivity" />
