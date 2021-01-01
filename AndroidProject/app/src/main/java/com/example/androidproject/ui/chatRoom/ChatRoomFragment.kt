@@ -29,14 +29,14 @@ class ChatRoomFragment : Fragment() {
                 ViewModelProvider(this).get(ChatRoomViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_chat_room, container, false)
 
-        preferences = activity?.getSharedPreferences("USERSIGN", Context.MODE_PRIVATE)!!
+        preferences = activity?.getSharedPreferences("auto", Context.MODE_PRIVATE)!!
         val editor = preferences!!.edit()
 
         val button : Button = root.findViewById(R.id.button)
         val editText : EditText = root.findViewById(R.id.editText)
 
         button.setOnClickListener{
-            editor.putString("name", editText.text.toString())
+            editor.putString("inputId", editText.text.toString())
             editor.apply()
             val intent = Intent(context, ChattingActivity::class.java)
             startActivity(intent)

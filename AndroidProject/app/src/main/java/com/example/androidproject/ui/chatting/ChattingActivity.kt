@@ -32,7 +32,7 @@ class ChattingActivity : AppCompatActivity() {
     private var time = 2
 
     //private var mSocket: Socket = IO.socket("[your server url]")
-    private var mSocket: Socket = IO.socket("http://ba5d598b8249.ngrok.io/")
+    private var mSocket: Socket = IO.socket("http://d0221208c90e.ngrok.io/")
 
     //리사이클러뷰
     var arrayList = arrayListOf<ChatModel>()
@@ -42,7 +42,7 @@ class ChattingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chatting)
 
-        preferences = getSharedPreferences("USERSIGN", Context.MODE_PRIVATE)
+        preferences = getSharedPreferences("auto", Context.MODE_PRIVATE)
 
         chat_recyclerview= findViewById(R.id.recyclerview)
 
@@ -75,9 +75,9 @@ class ChattingActivity : AppCompatActivity() {
 
             val userId = JSONObject()
             try {
-                userId.put("username", preferences.getString("name", "") + " Connected")
-                userId.put("roomName", "room_example")
-                Log.e("username",preferences.getString("name", "") + " Connected")
+                userId.put("username", preferences.getString("inputId", "") + " Connected")
+                userId.put("roomName", "roomName")
+                Log.e("username",preferences.getString("inputId", "") + " Connected")
 
                 //socket.emit은 메세지 전송임
                 mSocket.emit("connect user", userId)
@@ -151,7 +151,7 @@ class ChattingActivity : AppCompatActivity() {
 
 
     fun sendMessage() {
-        preferences = getSharedPreferences("USERSIGN", Context.MODE_PRIVATE)
+        preferences = getSharedPreferences("auto", Context.MODE_PRIVATE)
         val now = System.currentTimeMillis()
         val date = Date(now)
         //나중에 바꿔줄것
@@ -166,9 +166,7 @@ class ChattingActivity : AppCompatActivity() {
         chating_Text.setText("")
         val jsonObject = JSONObject()
         try {
-            jsonObject.put("name", preferences.getString("name", ""))
-
-
+            jsonObject.put("name", preferences.getString("inputId", ""))
             jsonObject.put("script", message)
             jsonObject.put("profile_image", "example")
             jsonObject.put("date_time", getTime)
@@ -177,7 +175,7 @@ class ChattingActivity : AppCompatActivity() {
             e.printStackTrace()
         }
         Log.e("챗룸", "sendMessage: 1" + mSocket.emit("chat message", jsonObject))
-        //Log.e("sendmmm",preferences.getString("name", "") )
+        Log.e("sendmmm", preferences.getString("inputId", "")!!)
         
     }
 }

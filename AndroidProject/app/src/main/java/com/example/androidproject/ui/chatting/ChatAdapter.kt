@@ -78,12 +78,12 @@ class ChatAdapter (val context: Context, val arrayList: ArrayList<ChatModel>)
     }
 
     override fun getItemViewType(position: Int): Int {//여기서 뷰타입을 1, 2로 바꿔서 지정해줘야 내채팅 너채팅을 바꾸면서 쌓을 수 있음
-        preferences = context.getSharedPreferences("USERSIGN", Context.MODE_PRIVATE)
+        preferences = context.getSharedPreferences("auto", Context.MODE_PRIVATE)
 
         //내 아이디와 arraylist의 name이 같다면 내꺼 아니면 상대꺼
         Log.e("test", arrayList.get(position).name)
 
-        return if (arrayList.get(position).name == preferences.getString("name","")) {
+        return if (arrayList.get(position).name == preferences.getString("inputId","")) {
             1
         } else {
             2
