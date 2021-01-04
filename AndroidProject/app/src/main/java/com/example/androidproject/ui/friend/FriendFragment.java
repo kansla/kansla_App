@@ -95,7 +95,7 @@ public class FriendFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                CustomDialogFragment dialog = CustomDialogFragment.newInstance("로그아웃 하시겠습니까?",2);
+                CustomDialogFragment dialog = CustomDialogFragment.newInstance("채팅을 시작하시겠습니까?",2);
                 dialog.show(getFragmentManager(), "dialog");
             }
         });
