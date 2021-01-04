@@ -32,7 +32,7 @@ class ChattingActivity : AppCompatActivity() {
     private var time = 2
 
     //private var mSocket: Socket = IO.socket("[your server url]")
-    private var mSocket: Socket = IO.socket("http://1fbe5f2dc694.ngrok.io/")
+    private var mSocket: Socket = IO.socket("http://0a12dff528a7.ngrok.io/")
 
     //리사이클러뷰
     var arrayList = arrayListOf<ChatModel>()

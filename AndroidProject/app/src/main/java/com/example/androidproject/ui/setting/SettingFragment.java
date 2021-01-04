@@ -69,7 +69,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener{
     }
 
     private void dialogShow() {
-        CustomDialogFragment dialog = CustomDialogFragment.newInstance("로그아웃 하시겠습니까?");
+        CustomDialogFragment dialog = CustomDialogFragment.newInstance("채팅을 시작할까요?",1);
         dialog.show(getFragmentManager(), "dialog");
     }
 

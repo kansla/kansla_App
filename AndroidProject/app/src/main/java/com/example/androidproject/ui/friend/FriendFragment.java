@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.androidproject.API.RetrofitHelper;
+import com.example.androidproject.CustomDialogFragment;
 import com.example.androidproject.DTO.FriendsDTO;
 import com.example.androidproject.R;
 
@@ -90,6 +91,14 @@ public class FriendFragment extends Fragment {
             @Override
             public void onFailure(Call<FriendsDTO> call, Throwable t) {
                 Log.e("errFriend", "통신 안됨: "+t.getMessage());
+            }
+        });
+        
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                CustomDialogFragment dialog = CustomDialogFragment.newInstance("로그아웃 하시겠습니까?",2);
+                dialog.show(getFragmentManager(), "dialog");
             }
         });
 
