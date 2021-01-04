@@ -4,14 +4,21 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
+import androidx.databinding.BindingAdapter
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ObservableArrayList
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
 import com.example.androidproject.R
+import com.example.androidproject.databinding.FragmentChatRoomBinding
 import com.example.androidproject.ui.chatting.ChattingActivity
 
 class ChatRoomFragment : Fragment() {
@@ -20,28 +27,42 @@ class ChatRoomFragment : Fragment() {
 
     internal lateinit var preferences: SharedPreferences
 
+    lateinit var bind: FragmentChatRoomBinding
+
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        dashboardViewModel =
-                ViewModelProvider(this).get(ChatRoomViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_chat_room, container, false)
+        bind = DataBindingUtil.inflate(
+                inflater,
+                R.layout.fragment_chat_room,
+                container,
+                false
+        )
+        var mAdapter = ChatListAdapter()
+        var chatList = ObservableArrayList<ChatList>()
+        bind.recyclerview.adapter = mAdapter
+        bind.chatList = chatList
+        chatList.add(ChatList("김소연", "그래서 난 눈누난나 빰빠바바바바바바바바바밥ㅁ 오예오예ㅔ 나외이ㅏ", (R.drawable.profile).toString()))
+        chatList.add(ChatList("문예원", "배고파요", (R.drawable.profile).toString()))
 
-        preferences = activity?.getSharedPreferences("auto", Context.MODE_PRIVATE)!!
-        val editor = preferences!!.edit()
-
-        val button : Button = root.findViewById(R.id.button)
-        val editText : EditText = root.findViewById(R.id.editText)
-
-        button.setOnClickListener{
-            editor.putString("second_email", editText.text.toString())
-            editor.apply()
-            val intent = Intent(context, ChattingActivity::class.java)
-            startActivity(intent)
+        bind.fab.setOnClickListener {
+            Toast.makeText(activity, "새로운 채팅방 만들기", Toast.LENGTH_LONG).show()
+            Log.d("abo", "새 채팅방 만들기")
+            /*activity?.let {
+                val intent = Intent(context, WriteDiary::class.java)
+                startActivity(intent)
+                activity?.finish()
+            }*/
         }
 
-        return root
+        return bind.root
     }
+}
+
+@BindingAdapter("item")
+fun bindItem(recyclerView: RecyclerView, chat: ObservableArrayList<ChatList>) {
+    val adapter: ChatListAdapter? = recyclerView.adapter as ChatListAdapter?
+    adapter?.setItem(chat)
 }
