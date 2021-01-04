@@ -9,8 +9,10 @@ public class ChatRoomDTO {
     private String email;
     @SerializedName("count")
     private int count;
-    @SerializedName("friend")
-    private List<Room> rooms;
+    @SerializedName("msg")
+    private List<Msg> msg;
+    @SerializedName("name")
+    private List<TName> name;
 
     public ChatRoomDTO(String email) {
         this.email = email;
@@ -21,7 +23,8 @@ public class ChatRoomDTO {
         return "ChatRoomDTO{" +
                 "email='" + email + '\'' +
                 ", count=" + count +
-                ", rooms=" + rooms +
+                ", msg=" + msg +
+                ", name=" + name +
                 '}';
     }
 
@@ -41,11 +44,19 @@ public class ChatRoomDTO {
         this.count = count;
     }
 
-    public List<Room> getRooms() {
-        return rooms;
+    public List<Msg> getMsg() {
+        return msg;
     }
 
-    public void setRooms(List<Room> rooms) {
-        this.rooms = rooms;
+    public void setMsg(List<Msg> msg) {
+        this.msg = msg;
+    }
+
+    public List<TName> getTName() {
+        return name;
+    }
+
+    public void setTName(List<TName> name) {
+        this.name = name;
     }
 }

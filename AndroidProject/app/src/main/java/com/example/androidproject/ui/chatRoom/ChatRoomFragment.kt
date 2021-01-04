@@ -51,19 +51,23 @@ class ChatRoomFragment : Fragment() {
         var chatList = ObservableArrayList<ChatList>()
         bind.recyclerview.adapter = mAdapter
         bind.chatList = chatList
-        chatList.add(ChatList("lee123@naver.com", "그래서 난 눈누난나 빰빠바바바바바바바바바밥ㅁ 오예오예ㅔ 나외이ㅏ", (R.drawable.profile).toString()))
-        chatList.add(ChatList("문예원", "배고파요", (R.drawable.profile).toString()))
+        //chatList.add(ChatList("lee123@naver.com", "그래서 난 눈누난나 빰빠바바바바바바바바바밥ㅁ 오예오예ㅔ 나외이ㅏ", (R.drawable.profile).toString()))
+        //chatList.add(ChatList("문예원", "배고파요", (R.drawable.profile).toString()))
 
-        var user : ChatRoomDTO = ChatRoomDTO(preferences.getString("inputId",""))
+        //var user : ChatRoomDTO = ChatRoomDTO(preferences.getString("inputId",""))
+        var user : ChatRoomDTO = ChatRoomDTO("lee123@naver.com")
         var call: Call<ChatRoomDTO>? = RetrofitHelper.getApiService().chat_room(user)
         call?.enqueue(object : Callback<ChatRoomDTO>{
             override fun onResponse(call: Call<ChatRoomDTO>, response: Response<ChatRoomDTO>) {
                 Log.e("성공입니당~",response.body().toString())
-                /*var result : ChatRoomDTO? = response.body()
-                for(i in 0..result!!.count){
-                    Log.e("rooms", result.rooms.get(i).status_msg)
-                    chatList.add(ChatList("이름", result.rooms.get(i).status_msg, (R.drawable.profile).toString()))
-                }*/
+                var result : ChatRoomDTO? = response.body()
+                var name : String
+                var msg : String
+                for (i in 0.. result?.msg!!.size-1){
+                    name = result.tName.get(i).name
+                    msg = result.msg.get(i).msg
+                    chatList.add(ChatList(name, msg, (R.drawable.profile).toString()) )
+                }
             }
 
             override fun onFailure(call: Call<ChatRoomDTO>, t: Throwable) {

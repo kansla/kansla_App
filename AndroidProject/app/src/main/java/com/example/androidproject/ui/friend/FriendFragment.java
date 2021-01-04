@@ -74,8 +74,6 @@ public class FriendFragment extends Fragment {
                 FriendsDTO result = response.body();
 
                 adapter.clearItem();
-
-                Log.e("친구", result.getCount()+" 친구수");
                 try {
                     for (int i=0; i<result.getCount(); i++){
                         adapter.addItem(result.getFriends().get(i).getName(), result.getFriends().get(i).getStatus_msg());
