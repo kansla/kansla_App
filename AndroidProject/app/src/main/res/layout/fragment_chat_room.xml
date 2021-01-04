@@ -27,22 +27,5 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:backgroundTint="@color/main_color"
-            android:tint="#fff"
-            app:borderWidth="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_baseline_add_32"
-            android:clickable="true"
-            android:focusable="true"
-            android:contentDescription="@string/todo"
-            android:layout_marginRight="16dp"
-            bind:ignore="VectorDrawableCompat" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

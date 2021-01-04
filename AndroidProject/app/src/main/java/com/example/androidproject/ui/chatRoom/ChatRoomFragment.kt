@@ -54,16 +54,6 @@ class ChatRoomFragment : Fragment() {
         chatList.add(ChatList("lee123@naver.com", "그래서 난 눈누난나 빰빠바바바바바바바바바밥ㅁ 오예오예ㅔ 나외이ㅏ", (R.drawable.profile).toString()))
         chatList.add(ChatList("문예원", "배고파요", (R.drawable.profile).toString()))
 
-        bind.fab.setOnClickListener {
-            Toast.makeText(activity, "새로운 채팅방 만들기", Toast.LENGTH_LONG).show()
-            Log.d("abo", "새 채팅방 만들기")
-            /*activity?.let {
-                val intent = Intent(context, WriteDiary::class.java)
-                startActivity(intent)
-                activity?.finish()
-            }*/
-        }
-
         var user : ChatRoomDTO = ChatRoomDTO(preferences.getString("inputId",""))
         var call: Call<ChatRoomDTO>? = RetrofitHelper.getApiService().chat_room(user)
         call?.enqueue(object : Callback<ChatRoomDTO>{
