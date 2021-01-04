@@ -2,13 +2,22 @@ package com.example.androidproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.androidproject.API.RetrofitHelper;
+import com.example.androidproject.DTO.UserDTO;
 import com.example.androidproject.sendEmail.SendMail;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FindPWDActivity extends AppCompatActivity {
 
@@ -16,7 +25,7 @@ public class FindPWDActivity extends AppCompatActivity {
     Button btnFind;
     static TextView textView;
 
-    String pw;
+    static String pw;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,12 +35,28 @@ public class FindPWDActivity extends AppCompatActivity {
         editId = findViewById(R.id.editId);
         btnFind = findViewById(R.id.findBtn);
         textView = findViewById(R.id.textView);
-        pw = "asdf1234";
 
         btnFind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendEmail();
+                UserDTO user = new UserDTO(editId.getText().toString());
+                Call<UserDTO> call = RetrofitHelper.getApiService().find_password(user);
+                call.enqueue(new Callback<UserDTO>() {
+                    @Override
+                    public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
+                        if(response.isSuccessful()){
+                            pw = response.body().getPwd();
+                            Log.e("pwd", pw);
+
+                            sendEmail();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<UserDTO> call, Throwable t) {
+                        Log.e("실패", t.getMessage());
+                    }
+                });
             }
         });
     }

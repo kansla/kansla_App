@@ -24,4 +24,6 @@ public interface UserAPI {
     Call<FriendsDTO> friend_list(@Body FriendsDTO email);
     @POST("/chat_room")
     Call<ChatRoomDTO> chat_room(@Body ChatRoomDTO chatRoomDTO);
+    @POST("/password")
+    Call<UserDTO> find_password(@Body UserDTO userDTO);
 }
