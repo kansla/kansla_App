@@ -47,7 +47,7 @@ class ChattingActivity : AppCompatActivity() {
         preferences = getSharedPreferences("auto", Context.MODE_PRIVATE)
 
         val actionBar = supportActionBar
-        actionBar?.title = preferences.getString("second_email", "")
+        actionBar?.title = preferences.getString("second_name", "")
 
         chat_recyclerview= findViewById(R.id.recyclerview)
 

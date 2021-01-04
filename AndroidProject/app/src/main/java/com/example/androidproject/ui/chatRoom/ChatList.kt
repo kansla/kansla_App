@@ -8,7 +8,8 @@ import com.example.androidproject.R
 data class ChatList(
     val name:String,
     val lastChat:String,
-    val img:String
+    val img:String,
+    val email:String
 )
 
 @BindingAdapter("imgUrl")

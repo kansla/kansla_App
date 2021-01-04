@@ -45,7 +45,7 @@ class ChatRoomFragment : Fragment() {
                 container,
                 false
         )
-        preferences = requireActivity().getPreferences(0)
+        preferences = requireActivity().getSharedPreferences("auto", Context.MODE_PRIVATE)
 
         var mAdapter = ChatListAdapter()
         var chatList = ObservableArrayList<ChatList>()
@@ -54,8 +54,7 @@ class ChatRoomFragment : Fragment() {
         //chatList.add(ChatList("lee123@naver.com", "그래서 난 눈누난나 빰빠바바바바바바바바바밥ㅁ 오예오예ㅔ 나외이ㅏ", (R.drawable.profile).toString()))
         //chatList.add(ChatList("문예원", "배고파요", (R.drawable.profile).toString()))
 
-        //var user : ChatRoomDTO = ChatRoomDTO(preferences.getString("inputId",""))
-        var user : ChatRoomDTO = ChatRoomDTO("lee123@naver.com")
+        var user : ChatRoomDTO = ChatRoomDTO(preferences.getString("inputId",""))
         var call: Call<ChatRoomDTO>? = RetrofitHelper.getApiService().chat_room(user)
         call?.enqueue(object : Callback<ChatRoomDTO>{
             override fun onResponse(call: Call<ChatRoomDTO>, response: Response<ChatRoomDTO>) {
@@ -63,10 +62,12 @@ class ChatRoomFragment : Fragment() {
                 var result : ChatRoomDTO? = response.body()
                 var name : String
                 var msg : String
+                var email : String
                 for (i in 0.. result?.msg!!.size-1){
                     name = result.tName.get(i).name
                     msg = result.msg.get(i).msg
-                    chatList.add(ChatList(name, msg, (R.drawable.profile).toString()) )
+                    email = result.tName.get(i).email
+                    chatList.add(ChatList(name, msg, (R.drawable.profile).toString(), email)  )
                 }
             }
 
