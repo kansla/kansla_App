@@ -32,17 +32,22 @@ class ChattingActivity : AppCompatActivity() {
     private var time = 2
 
     //private var mSocket: Socket = IO.socket("[your server url]")
-    private var mSocket: Socket = IO.socket("http://d0221208c90e.ngrok.io/")
+    private var mSocket: Socket = IO.socket("http://f1e4a07bc110.ngrok.io/")
 
     //리사이클러뷰
     var arrayList = arrayListOf<ChatModel>()
     val mAdapter = ChatAdapter(this, arrayList)
+
+    var roomNumber : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chatting)
 
         preferences = getSharedPreferences("auto", Context.MODE_PRIVATE)
+
+        val actionBar = supportActionBar
+        actionBar?.title = preferences.getString("second_email", "")
 
         chat_recyclerview= findViewById(R.id.recyclerview)
 
@@ -75,8 +80,8 @@ class ChattingActivity : AppCompatActivity() {
 
             val userId = JSONObject()
             try {
-                userId.put("username", preferences.getString("inputId", "") + " Connected")
-                userId.put("roomName", "roomName")
+                userId.put("first_email", preferences.getString("inputId", ""))
+                userId.put("second_email", preferences.getString("second_email",""))
                 Log.e("username",preferences.getString("inputId", "") + " Connected")
 
                 //socket.emit은 메세지 전송임
@@ -97,7 +102,6 @@ class ChattingActivity : AppCompatActivity() {
         chat_recyclerview.post(Runnable { 
             run(){
                 chat_recyclerview.scrollToPosition((chat_recyclerview.adapter as ChatAdapter).itemCount-1)
-                Log.e("호호","post")
             }
         })
     }
@@ -141,7 +145,11 @@ class ChattingActivity : AppCompatActivity() {
             var username = args[0].toString()
             try {
                 val `object` = JSONObject(username)
-                username = `object`.getString("username")
+                preferences = getSharedPreferences("auto", Context.MODE_PRIVATE)
+                val editor = preferences!!.edit()
+                roomNumber = `object`.getString("room")
+                editor.putString("roomName", roomNumber)
+                Log.e("roomName", `object`.getString("room")+ " roomName이다.")
             } catch (e: JSONException) {
                 e.printStackTrace()
             }
@@ -170,7 +178,8 @@ class ChattingActivity : AppCompatActivity() {
             jsonObject.put("script", message)
             jsonObject.put("profile_image", "example")
             jsonObject.put("date_time", getTime)
-            jsonObject.put("roomName", "room_example")
+            jsonObject.put("room", roomNumber)
+            Log.e("roomname2", roomNumber+" roomName2이다.")
         } catch (e: JSONException) {
             e.printStackTrace()
         }

@@ -36,7 +36,7 @@ class ChatRoomFragment : Fragment() {
         val editText : EditText = root.findViewById(R.id.editText)
 
         button.setOnClickListener{
-            editor.putString("inputId", editText.text.toString())
+            editor.putString("second_email", editText.text.toString())
             editor.apply()
             val intent = Intent(context, ChattingActivity::class.java)
             startActivity(intent)
