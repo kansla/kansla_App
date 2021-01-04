@@ -41,7 +41,7 @@ public class CustomDialogFragment extends DialogFragment implements View.OnClick
         if(type == 1) {
             View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_dialog, null);
             ((TextView) view.findViewById(R.id.textView)).setText(mMainMsg);
-            view.findViewById(R.id.btnYes2).setOnClickListener(this);
+            view.findViewById(R.id.btnYes).setOnClickListener(this);
             view.findViewById(R.id.btnNo).setOnClickListener(this);
             builder.setCancelable(false);
             builder.setView(view);
