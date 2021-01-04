@@ -17,9 +17,14 @@ import androidx.databinding.ObservableArrayList
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import com.example.androidproject.API.RetrofitHelper
+import com.example.androidproject.DTO.ChatRoomDTO
 import com.example.androidproject.R
 import com.example.androidproject.databinding.FragmentChatRoomBinding
 import com.example.androidproject.ui.chatting.ChattingActivity
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ChatRoomFragment : Fragment() {
 
@@ -40,6 +45,8 @@ class ChatRoomFragment : Fragment() {
                 container,
                 false
         )
+        preferences = requireActivity().getPreferences(0)
+
         var mAdapter = ChatListAdapter()
         var chatList = ObservableArrayList<ChatList>()
         bind.recyclerview.adapter = mAdapter
@@ -56,6 +63,24 @@ class ChatRoomFragment : Fragment() {
                 activity?.finish()
             }*/
         }
+
+        var user : ChatRoomDTO = ChatRoomDTO(preferences.getString("inputId",""))
+        var call: Call<ChatRoomDTO>? = RetrofitHelper.getApiService().chat_room(user)
+        call?.enqueue(object : Callback<ChatRoomDTO>{
+            override fun onResponse(call: Call<ChatRoomDTO>, response: Response<ChatRoomDTO>) {
+                Log.e("성공입니당~",response.body().toString())
+                var result : ChatRoomDTO? = response.body()
+                for(i in 0..result!!.count){
+                    Log.e("rooms", result.rooms.get(i).status_msg)
+                    chatList.add(ChatList("이름", result.rooms.get(i).status_msg, (R.drawable.profile).toString()))
+                }
+            }
+
+            override fun onFailure(call: Call<ChatRoomDTO>, t: Throwable) {
+                Log.e("d실패", t.message.toString())
+            }
+
+        })
 
         return bind.root
     }

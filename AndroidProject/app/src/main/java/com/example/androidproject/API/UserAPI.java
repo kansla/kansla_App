@@ -1,5 +1,6 @@
 package com.example.androidproject.API;
 
+import com.example.androidproject.DTO.ChatRoomDTO;
 import com.example.androidproject.DTO.FriendsDTO;
 import com.example.androidproject.DTO.ResponseLogin;
 import com.example.androidproject.DTO.UserDTO;
@@ -21,4 +22,6 @@ public interface UserAPI {
     Call<UserDTO> check_email(@Body UserDTO userDTO);
     @POST("/friend/friend_list")
     Call<FriendsDTO> friend_list(@Body FriendsDTO email);
+    @POST("/chat_room")
+    Call<ChatRoomDTO> chat_room(@Body ChatRoomDTO chatRoomDTO);
 }
