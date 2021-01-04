@@ -74,9 +74,15 @@ public class FriendFragment extends Fragment {
 
                 adapter.clearItem();
 
-                for (int i=0; i<result.getCount(); i++){
-                    adapter.addItem(result.getFriends().get(i).getName(), result.getFriends().get(i).getStatus_msg());
+                Log.e("친구", result.getCount()+" 친구수");
+                try {
+                    for (int i=0; i<result.getCount(); i++){
+                        adapter.addItem(result.getFriends().get(i).getName(), result.getFriends().get(i).getStatus_msg());
+                    }
+                }catch (Exception e){
+                    Log.e("친구", "없음");
                 }
+
                 listView.setAdapter(adapter);
 
             }
