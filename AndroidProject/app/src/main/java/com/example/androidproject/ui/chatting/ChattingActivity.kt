@@ -32,7 +32,7 @@ class ChattingActivity : AppCompatActivity() {
     private var time = 2
 
     //private var mSocket: Socket = IO.socket("[your server url]")
-    private var mSocket: Socket = IO.socket("http://f1e4a07bc110.ngrok.io/")
+    private var mSocket: Socket = IO.socket("http://1fbe5f2dc694.ngrok.io/")
 
     //리사이클러뷰
     var arrayList = arrayListOf<ChatModel>()
@@ -147,8 +147,19 @@ class ChattingActivity : AppCompatActivity() {
                 val `object` = JSONObject(username)
                 preferences = getSharedPreferences("auto", Context.MODE_PRIVATE)
                 val editor = preferences!!.edit()
-                roomNumber = `object`.getString("room")
-                editor.putString("roomName", roomNumber)
+                if(`object`.getString("first_email").equals(preferences.getString("inputId","")) &&
+                        `object`.getString("second_email").equals(preferences.getString("second_email", ""))){
+                    roomNumber = `object`.getString("room")
+                    editor.putString("roomName", roomNumber)
+                    Log.e("roomNameㅗㅗㅗ", `object`.getString("room")+ " roomName이다.")
+                }
+                else if (`object`.getString("first_email").equals(preferences.getString("second_email","")) &&
+                        `object`.getString("second_email").equals(preferences.getString("inputId", ""))){
+                    roomNumber = `object`.getString("room")
+                    editor.putString("roomName", roomNumber)
+                    Log.e("roomNameㅗㅗㅗ", `object`.getString("room")+ " roomName이다.")
+                }
+
                 Log.e("roomName", `object`.getString("room")+ " roomName이다.")
             } catch (e: JSONException) {
                 e.printStackTrace()
