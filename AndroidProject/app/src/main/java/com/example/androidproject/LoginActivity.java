@@ -21,9 +21,7 @@ import com.example.androidproject.DTO.ResponseLogin;
 import com.example.androidproject.DTO.UserDTO;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -91,6 +89,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.findIdPW:
+                Intent intent1 = new Intent(getApplicationContext(), FindPWDActivity.class);
+                startActivity(intent1);
                 break;
             case R.id.signup:
                 Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
