@@ -32,7 +32,7 @@ class ChattingActivity : AppCompatActivity() {
     private var time = 2
 
     //private var mSocket: Socket = IO.socket("[your server url]")
-    private var mSocket: Socket = IO.socket("http://0a12dff528a7.ngrok.io/")
+    private var mSocket: Socket = IO.socket("http://4c9fb7d35aa4.ngrok.io/")
 
     //리사이클러뷰
     var arrayList = arrayListOf<ChatModel>()
@@ -113,15 +113,18 @@ class ChattingActivity : AppCompatActivity() {
             val script: String
             val profile_image: String
             val date_time: String
+            val email: String
             try {
+                preferences = getSharedPreferences("auto", Context.MODE_PRIVATE)
                 Log.e("asdasd", data.toString())
-                name = data.getString("name")
+                name = preferences.getString("second_name","").toString()
                 script = data.getString("script")
                 profile_image = data.getString("profile_image")
                 date_time = data.getString("date_time")
+                email = data.getString("name")
 
 
-                val format = ChatModel(name, script, profile_image, date_time)
+                val format = ChatModel(name, script, profile_image, date_time, email)
                 mAdapter.addItem(format)
                 mAdapter.notifyDataSetChanged()
                 // 메세지가 올라올때마다 스크롤 최하단으로 보내기

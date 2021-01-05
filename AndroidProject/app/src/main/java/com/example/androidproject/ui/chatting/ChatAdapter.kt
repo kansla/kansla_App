@@ -83,7 +83,7 @@ class ChatAdapter (val context: Context, val arrayList: ArrayList<ChatModel>)
         //내 아이디와 arraylist의 name이 같다면 내꺼 아니면 상대꺼
         Log.e("test", arrayList.get(position).name)
 
-        return if (arrayList.get(position).name == preferences.getString("inputId","")) {
+        return if (arrayList.get(position).email == preferences.getString("inputId","")) {
             1
         } else {
             2
