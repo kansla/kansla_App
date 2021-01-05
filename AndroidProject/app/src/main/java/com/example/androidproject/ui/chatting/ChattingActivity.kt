@@ -86,6 +86,7 @@ class ChattingActivity : AppCompatActivity() {
             //socket.on은 수신
             mSocket.on("connect user", onNewUser)
             mSocket.on("chat message", onNewMessage)
+            mSocket.on("leave", onNewLeave)
 
             val userId = JSONObject()
             try {
@@ -114,6 +115,12 @@ class ChattingActivity : AppCompatActivity() {
                 chat_recyclerview.scrollToPosition((chat_recyclerview.adapter as ChatAdapter).itemCount-1)
             }
         })
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        leave()
+        Log.e("onDestroy", "leave")
     }
 
     internal var onNewMessage: Emitter.Listener = Emitter.Listener { args ->
@@ -182,6 +189,12 @@ class ChattingActivity : AppCompatActivity() {
 
         })
     }
+    internal var onNewLeave: Emitter.Listener = Emitter.Listener { args ->
+        runOnUiThread(Runnable {
+            val data = args[0] as JSONObject
+            Log.e("data", data.toString())
+        })
+    }
 
 
     fun sendMessage() {
@@ -212,6 +225,17 @@ class ChattingActivity : AppCompatActivity() {
         Log.e("챗룸", "sendMessage: 1" + mSocket.emit("chat message", jsonObject))
         Log.e("sendmmm", preferences.getString("inputId", "")!!)
         
+    }
+
+    fun leave(){
+        val jsonObject = JSONObject()
+        try {
+            jsonObject.put("room", preferences.getString("roomName","0"))
+            Log.e("leave", jsonObject.toString())
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
+        mSocket.emit("chat message", jsonObject)
     }
 
     fun loadMessage(){
