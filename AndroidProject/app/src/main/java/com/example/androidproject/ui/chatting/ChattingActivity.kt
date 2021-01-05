@@ -88,9 +88,9 @@ class ChattingActivity : AppCompatActivity() {
             mSocket.on("chat message", onNewMessage)
             mSocket.on("leave", onNewLeave)
 
-            val userId = JSONObject()
+            /*val userId = JSONObject()
             try {
-                userId.put("room", preferences.getString("roomName", "1"))
+                userId.put("room", preferences.getString("roomName", "0"))
                 roomNumber = preferences.getString("roomName", "").toString()
                 Log.e("roomNAMe", roomNumber)
                 Log.e("username",preferences.getString("inputId", "") + " Connected")
@@ -99,7 +99,7 @@ class ChattingActivity : AppCompatActivity() {
                 mSocket.emit("connect user", userId)
             } catch (e: JSONException) {
                 e.printStackTrace()
-            }
+            }*/
 
         }
 
@@ -218,7 +218,7 @@ class ChattingActivity : AppCompatActivity() {
             jsonObject.put("profile_image", "example")
             jsonObject.put("date_time", getTime)
             jsonObject.put("room", preferences.getString("roomName","0"))
-            Log.e("roomname2", roomNumber+" roomName2이다.")
+            Log.e("roomname2", preferences.getString("roomName","0")+" roomName2이다.")
         } catch (e: JSONException) {
             e.printStackTrace()
         }
@@ -235,7 +235,7 @@ class ChattingActivity : AppCompatActivity() {
         } catch (e: JSONException) {
             e.printStackTrace()
         }
-        mSocket.emit("chat message", jsonObject)
+        mSocket.emit("leave", jsonObject)
     }
 
     fun loadMessage(){
@@ -267,6 +267,18 @@ class ChattingActivity : AppCompatActivity() {
                     mAdapter.notifyDataSetChanged()
                     // 메세지가 올라올때마다 스크롤 최하단으로 보내기
                     chat_recyclerview.scrollToPosition(((chat_recyclerview.adapter?.itemCount ?: Int) as Int) - 1)
+                }
+                val userId = JSONObject()
+                try {
+                    userId.put("room", preferences.getString("roomName", "0"))
+                    roomNumber = preferences.getString("roomName", "").toString()
+                    Log.e("roomNAMe", roomNumber)
+                    Log.e("username",preferences.getString("inputId", "") + " Connected")
+
+                    //socket.emit은 메세지 전송임
+                    mSocket.emit("connect user", userId)
+                } catch (e: JSONException) {
+                    e.printStackTrace()
                 }
             }
 
