@@ -2,6 +2,7 @@ package com.example.androidproject.API;
 
 import com.example.androidproject.DTO.ChatRoomDTO;
 import com.example.androidproject.DTO.FriendsDTO;
+import com.example.androidproject.DTO.LoadMsgDTO;
 import com.example.androidproject.DTO.ResponseLogin;
 import com.example.androidproject.DTO.UserDTO;
 import com.example.androidproject.DTO.UserModifyDTO;
@@ -26,4 +27,6 @@ public interface UserAPI {
     Call<ChatRoomDTO> chat_room(@Body ChatRoomDTO chatRoomDTO);
     @POST("/password")
     Call<UserDTO> find_password(@Body UserDTO userDTO);
+    @POST("/chat_load")
+    Call<LoadMsgDTO> chat_load(@Body int room);
 }

@@ -10,12 +10,19 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.androidproject.API.RetrofitHelper
+import com.example.androidproject.DTO.ChatRoomDTO
+import com.example.androidproject.DTO.LoadMsgDTO
 import com.example.androidproject.R
+import com.example.androidproject.ui.chatRoom.ChatList
 import com.github.nkzawa.emitter.Emitter
 import com.github.nkzawa.socketio.client.IO
 import com.github.nkzawa.socketio.client.Socket
 import org.json.JSONException
 import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -168,6 +175,8 @@ class ChattingActivity : AppCompatActivity() {
                 e.printStackTrace()
             }
 
+            loadMessage()
+
         })
     }
 
@@ -177,7 +186,7 @@ class ChattingActivity : AppCompatActivity() {
         val now = System.currentTimeMillis()
         val date = Date(now)
         //나중에 바꿔줄것
-        val sdf = SimpleDateFormat("yyyy-MM-dd")
+        val sdf = SimpleDateFormat("yyyy-MM-dd-hh-mm-ss")
 
         val getTime = sdf.format(date)
 
@@ -200,5 +209,38 @@ class ChattingActivity : AppCompatActivity() {
         Log.e("챗룸", "sendMessage: 1" + mSocket.emit("chat message", jsonObject))
         Log.e("sendmmm", preferences.getString("inputId", "")!!)
         
+    }
+
+    fun loadMessage(){
+        preferences = getSharedPreferences("auto", Context.MODE_PRIVATE)
+        var room : Int = Integer.parseInt(preferences.getString("roomName", "0"))
+        var call: Call<LoadMsgDTO>? = RetrofitHelper.getApiService().chat_load(room)
+        call?.enqueue(object : Callback<LoadMsgDTO> {
+            override fun onResponse(call: Call<LoadMsgDTO>, response: Response<LoadMsgDTO>) {
+                Log.e("성공입니당~",response.body().toString())
+                var result : LoadMsgDTO? = response.body()
+                var name : String
+                var msg : String
+                var email : String
+                var date_time : String
+                for (i in 0.. result!!.count-1){
+                    name = result.chatLine.get(i).name
+                    msg = result.chatLine.get(i).msg
+                    date_time = result.chatLine.get(i).date
+                    email = preferences.getString("second_email","").toString()
+
+                    val format = ChatModel(name, msg, "profileImage", date_time, email)
+                    mAdapter.addItem(format)
+                    mAdapter.notifyDataSetChanged()
+                    // 메세지가 올라올때마다 스크롤 최하단으로 보내기
+                    chat_recyclerview.scrollToPosition(((chat_recyclerview.adapter?.itemCount ?: Int) as Int) - 1)
+                }
+            }
+
+            override fun onFailure(call: Call<LoadMsgDTO>, t: Throwable) {
+                Log.e("d실패", t.message.toString())
+            }
+
+        })
     }
 }
