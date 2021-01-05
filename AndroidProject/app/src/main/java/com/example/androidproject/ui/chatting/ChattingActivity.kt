@@ -76,6 +76,8 @@ class ChattingActivity : AppCompatActivity() {
         if (hasConnection) {
 
         } else {
+            loadMessage()
+
             //소켓연결
             mSocket.connect()
 
@@ -87,8 +89,8 @@ class ChattingActivity : AppCompatActivity() {
 
             val userId = JSONObject()
             try {
-                userId.put("first_email", preferences.getString("inputId", ""))
-                userId.put("second_email", preferences.getString("second_email",""))
+                userId.put("room", preferences.getString("roomName", "1"))
+                Log.e("roomNAMe", preferences.getString("roomName", "").toString())
                 Log.e("username",preferences.getString("inputId", "") + " Connected")
 
                 //socket.emit은 메세지 전송임
@@ -161,12 +163,14 @@ class ChattingActivity : AppCompatActivity() {
                         `object`.getString("second_email").equals(preferences.getString("second_email", ""))){
                     roomNumber = `object`.getString("room")
                     editor.putString("roomName", roomNumber)
+                    editor.apply()
                     Log.e("roomNameㅗㅗㅗ", `object`.getString("room")+ " roomName이다.")
                 }
                 else if (`object`.getString("first_email").equals(preferences.getString("second_email","")) &&
                         `object`.getString("second_email").equals(preferences.getString("inputId", ""))){
                     roomNumber = `object`.getString("room")
                     editor.putString("roomName", roomNumber)
+                    editor.apply()
                     Log.e("roomNameㅗㅗㅗ", `object`.getString("room")+ " roomName이다.")
                 }
 
@@ -174,8 +178,6 @@ class ChattingActivity : AppCompatActivity() {
             } catch (e: JSONException) {
                 e.printStackTrace()
             }
-
-            loadMessage()
 
         })
     }
@@ -213,7 +215,8 @@ class ChattingActivity : AppCompatActivity() {
 
     fun loadMessage(){
         preferences = getSharedPreferences("auto", Context.MODE_PRIVATE)
-        var room : Int = Integer.parseInt(preferences.getString("roomName", "0"))
+        val editor = preferences!!.edit()
+        var room : LoadMsgDTO = LoadMsgDTO(preferences.getString("inputId", ""), preferences.getString("second_email",""))
         var call: Call<LoadMsgDTO>? = RetrofitHelper.getApiService().chat_load(room)
         call?.enqueue(object : Callback<LoadMsgDTO> {
             override fun onResponse(call: Call<LoadMsgDTO>, response: Response<LoadMsgDTO>) {
@@ -228,6 +231,11 @@ class ChattingActivity : AppCompatActivity() {
                     msg = result.chatLine.get(i).msg
                     date_time = result.chatLine.get(i).date
                     email = preferences.getString("second_email","").toString()
+                    editor.putString("roomName", result.room.toString())
+                    editor.apply()
+
+                    Log.e("roomNAme", preferences.getString("roomName", "").toString())
+                    Log.e("name", name)
 
                     val format = ChatModel(name, msg, "profileImage", date_time, email)
                     mAdapter.addItem(format)

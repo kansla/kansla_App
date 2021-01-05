@@ -28,5 +28,5 @@ public interface UserAPI {
     @POST("/password")
     Call<UserDTO> find_password(@Body UserDTO userDTO);
     @POST("/chat_load")
-    Call<LoadMsgDTO> chat_load(@Body int room);
+    Call<LoadMsgDTO> chat_load(@Body LoadMsgDTO loadMsgDTO);
 }

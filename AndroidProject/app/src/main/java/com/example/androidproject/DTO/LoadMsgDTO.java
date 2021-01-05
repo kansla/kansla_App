@@ -5,15 +5,37 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class LoadMsgDTO {
+    @SerializedName("first_email")
+    private String first_email;
+    @SerializedName("second_email")
+    private String second_email;
     @SerializedName("count")
     private int count;
+    @SerializedName("room")
+    private int room;
     @SerializedName("chat_line")
     private List<ChatLine> chatLine;
+
+    public LoadMsgDTO(String first_email, String second_email) {
+        this.first_email = first_email;
+        this.second_email = second_email;
+    }
+
+    @Override
+    public String toString() {
+        return "LoadMsgDTO{" +
+                "first_email='" + first_email + '\'' +
+                ", second_email='" + second_email + '\'' +
+                ", count=" + count +
+                ", room=" + room +
+                ", chatLine=" + chatLine +
+                '}';
+    }
 
     public class ChatLine {
         @SerializedName("name")
         private String name;
-        @SerializedName("text")
+        @SerializedName("line_text")
         private String msg;
         @SerializedName("created_at")
         private String date;
@@ -52,12 +74,20 @@ public class LoadMsgDTO {
         }
     }
 
-    @Override
-    public String toString() {
-        return "LoadMsgDTO{" +
-                "count=" + count +
-                ", chatLine=" + chatLine +
-                '}';
+    public String getFirst_email() {
+        return first_email;
+    }
+
+    public void setFirst_email(String first_email) {
+        this.first_email = first_email;
+    }
+
+    public String getSecond_email() {
+        return second_email;
+    }
+
+    public void setSecond_email(String second_email) {
+        this.second_email = second_email;
     }
 
     public int getCount() {
@@ -66,6 +96,14 @@ public class LoadMsgDTO {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public int getRoom() {
+        return room;
+    }
+
+    public void setRoom(int room) {
+        this.room = room;
     }
 
     public List<ChatLine> getChatLine() {
