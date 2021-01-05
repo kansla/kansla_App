@@ -90,7 +90,8 @@ class ChattingActivity : AppCompatActivity() {
             val userId = JSONObject()
             try {
                 userId.put("room", preferences.getString("roomName", "1"))
-                Log.e("roomNAMe", preferences.getString("roomName", "").toString())
+                roomNumber = preferences.getString("roomName", "").toString()
+                Log.e("roomNAMe", roomNumber)
                 Log.e("username",preferences.getString("inputId", "") + " Connected")
 
                 //socket.emit은 메세지 전송임
@@ -203,7 +204,7 @@ class ChattingActivity : AppCompatActivity() {
             jsonObject.put("script", message)
             jsonObject.put("profile_image", "example")
             jsonObject.put("date_time", getTime)
-            jsonObject.put("room", roomNumber)
+            jsonObject.put("room", preferences.getString("roomName","0"))
             Log.e("roomname2", roomNumber+" roomName2이다.")
         } catch (e: JSONException) {
             e.printStackTrace()

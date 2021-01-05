@@ -43,6 +43,7 @@ class ChatAdapter (val context: Context, val arrayList: ArrayList<ChatModel>)
     }
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, i: Int) {
+        preferences = context.getSharedPreferences("auto", Context.MODE_PRIVATE)
         //onCreateViewHolder에서 리턴받은 뷰홀더가 Holder라면 내채팅, item_my_chat의 뷰들을 초기화 해줌
         if (viewHolder is Holder) {
             (viewHolder as Holder).chat_Text?.setText(arrayList.get(i).script)
@@ -51,7 +52,7 @@ class ChatAdapter (val context: Context, val arrayList: ArrayList<ChatModel>)
         //onCreateViewHolder에서 리턴받은 뷰홀더가 Holder2라면 상대의 채팅, item_your_chat의 뷰들을 초기화 해줌
         else if(viewHolder is Holder2) {
             (viewHolder as Holder2).chat_You_Image?.setImageResource(R.mipmap.ic_launcher)
-            (viewHolder as Holder2).chat_You_Name?.setText(arrayList.get(i).name)
+            (viewHolder as Holder2).chat_You_Name?.setText(preferences.getString("second_name",""))
             (viewHolder as Holder2).chat_Text?.setText(arrayList.get(i).script)
             (viewHolder as Holder2).chat_Time?.setText(arrayList.get(i).date_time)
         }
@@ -83,7 +84,7 @@ class ChatAdapter (val context: Context, val arrayList: ArrayList<ChatModel>)
         //내 아이디와 arraylist의 name이 같다면 내꺼 아니면 상대꺼
         Log.e("test", arrayList.get(position).name)
 
-        return if (arrayList.get(position).email == preferences.getString("inputId","")) {
+        return if (arrayList.get(position).email == preferences.getString("inputId","") || arrayList.get(position).name == preferences.getString("inputId","")) {
             1
         } else {
             2
