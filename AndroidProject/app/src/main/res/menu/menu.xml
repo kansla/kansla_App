@@ -5,5 +5,5 @@
         android:id="@+id/addFri"
         android:title="버튼1"
         app:showAsAction="always"
-        android:icon="@drawable/user" />
+        android:icon="@drawable/addUser" />
 </menu>
