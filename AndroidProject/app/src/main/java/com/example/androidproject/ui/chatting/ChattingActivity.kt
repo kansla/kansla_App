@@ -2,22 +2,21 @@ package com.example.androidproject.ui.chatting
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.androidproject.API.RetrofitHelper
-import com.example.androidproject.DTO.ChatRoomDTO
 import com.example.androidproject.DTO.LoadMsgDTO
 import com.example.androidproject.R
-import com.example.androidproject.ui.chatRoom.ChatList
 import com.github.nkzawa.emitter.Emitter
 import com.github.nkzawa.socketio.client.IO
 import com.github.nkzawa.socketio.client.Socket
@@ -36,6 +35,8 @@ class ChattingActivity : AppCompatActivity() {
     private lateinit var chat_Send_Button: Button
     private lateinit var image_you:ImageView
     private lateinit var image_me: ImageView
+    private lateinit var you_chat: TextView
+    private lateinit var my_chat: TextView
     lateinit var chat_recyclerview : RecyclerView
 
 
@@ -76,6 +77,12 @@ class ChattingActivity : AppCompatActivity() {
 
         image_me = findViewById(R.id.image_me)
         image_you = findViewById(R.id.image_you)
+
+        you_chat = findViewById(R.id.youChat)
+        my_chat = findViewById(R.id.myChat)
+
+        Glide.with(applicationContext).load(R.drawable.idontknow).asGif().into(image_you)
+        Glide.with(applicationContext).load(R.drawable.idontknow).asGif().into(image_me)
 
         if (savedInstanceState != null) {
             hasConnection = savedInstanceState.getBoolean("hasConnection")
@@ -166,8 +173,10 @@ class ChattingActivity : AppCompatActivity() {
                         "슬픔" -> Glide.with(applicationContext).load(R.drawable.sad).asGif().into(image_you)
                         "혐오" -> Glide.with(applicationContext).load(R.drawable.aversion).asGif().into(image_you)
                         "분노" -> Glide.with(applicationContext).load(R.drawable.angry).asGif().into(image_you)
-                        else -> image_you.setImageResource(R.mipmap.ic_launcher)
+                        else -> Glide.with(applicationContext).load(R.drawable.idontknow).asGif().into(image_you)
                     }
+                    you_chat.setText(script)
+                    you_chat.visibility = View.VISIBLE
                 }
                 else{
                     Log.e("image_me", email+" : "+ preferences.getString("second_email","")+" : "+emotion)
@@ -180,8 +189,10 @@ class ChattingActivity : AppCompatActivity() {
                         "슬픔" -> Glide.with(applicationContext).load(R.drawable.sad).asGif().into(image_me)
                         "혐오" -> Glide.with(applicationContext).load(R.drawable.aversion).asGif().into(image_me)
                         "분노" -> Glide.with(applicationContext).load(R.drawable.angry).asGif().into(image_me)
-                        else -> image_me.setImageResource(R.mipmap.ic_launcher)
+                        else -> Glide.with(applicationContext).load(R.drawable.idontknow).asGif().into(image_you)
                     }
+                    my_chat.setText(script)
+                    my_chat.visibility = View.VISIBLE
                 }
 
 

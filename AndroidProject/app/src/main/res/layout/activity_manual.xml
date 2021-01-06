@@ -12,15 +12,15 @@
         android:layout_height="0dp"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
-        android:layout_marginTop="34dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
         android:layout_marginBottom="34dp"
-        android:textSize="20dp"
         android:fontFamily="@font/appleneom"
         android:text="저희 앱은요....\n사용자의 채팅에서 감정을 추출하여 캐릭터를 이용한 유쾌한 표현을 할 수 있어요... \n저희 팀은요...
 \n정인교만 찾는 안수빈이 있고요.. \n빵만 찾는 문예원이 있고요.... \n문예원만 찾는 김소연이 있고요... \n밤만되면 사라지는 이도운이 있어요...\n
 저희 앱은요...\n 지페를 해야해서 만들었는데 잘만들면 출시할거예요... 저희가 비록 너무 잘했긴했지만 그래도 상이 필요해요.. 저희가요... 상을 못받아봤어요... 그리고요 저희가 상을 받아야떡볶이를 먹을수 있어요... 밤마다 사라지는애가 떡볶이 쏜다구...했지말이여유.."
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

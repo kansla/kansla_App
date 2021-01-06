@@ -15,8 +15,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imageView3"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -37,6 +37,7 @@
             android:textColor="#000000"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:fontFamily="@font/appleneom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView3"
             app:layout_constraintTop_toTopOf="parent" />
@@ -54,6 +55,7 @@
             android:textSize="14sp"
             android:ellipsize="end"
             android:maxLines="1"
+            android:fontFamily="@font/appleneol"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView3"
             app:layout_constraintTop_toBottomOf="@+id/textView" />

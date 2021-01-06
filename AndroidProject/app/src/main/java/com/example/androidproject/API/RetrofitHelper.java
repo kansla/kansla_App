@@ -12,7 +12,7 @@ public class RetrofitHelper {
     public static UserAPI getApiService(){return  getInstance().create(UserAPI.class);}
 
     private static Retrofit getInstance() {
-        Gson gson = new GsonBuilder().setLenient().create();
+        Gson gson = new GsonBuilder().setDateFormat("HH:mm").setLenient().create();
         return new Retrofit.Builder()
                 .baseUrl(API_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))

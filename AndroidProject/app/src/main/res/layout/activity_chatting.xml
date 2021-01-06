@@ -1,18 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.sothree.slidinguppanel.SlidingUpPanelLayout
+<com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="top"
     app:umanoDragView="@id/dragView"
     app:umanoScrollableView="@id/recyclerview"
-    app:umanoPanelHeight="70dp"
+    app:umanoPanelHeight="500dp"
     app:umanoOverlay="false"
+    app:umanoShadowHeight="10dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/youChat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="10dp"
+            android:padding="8dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/appleneom"
+            android:textSize="16dp"
+            android:text="상대방 채팅 입니당~"
+            android:gravity="center"
+            android:visibility="gone"
+            android:background="@drawable/chat_you_image"
+            app:layout_constraintBottom_toTopOf="@+id/image_you"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
             android:id="@+id/image_you"
@@ -21,8 +40,27 @@
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginBottom="8dp"
+            android:src="@drawable/profile"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/myChat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/chat_my_image"
+            android:fontFamily="@font/appleneom"
+            android:padding="8dp"
+            android:text="내 채팅 입니당~"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:gravity="center"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/image_me"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <ImageView
             android:id="@+id/image_me"
@@ -31,8 +69,9 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
+            android:src="@drawable/profile"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -50,6 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:ems="10"
+                android:layout_marginLeft="10dp"
                 android:hint="메시지 내용을 입력하세요"
                 android:inputType="textPersonName" />
 
@@ -57,14 +97,15 @@
                 android:id="@+id/send_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="보내기"/>
+                android:text="보내기"
+                android:layout_marginRight="10dp"/>
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="800dp"
         android:id="@+id/dragView"
         android:orientation="vertical">
 
@@ -72,7 +113,8 @@
             android:id="@+id/recyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="60dp" />
+            android:layout_marginTop="60dp"
+            android:layout_marginBottom="20dp"/>
 
     </LinearLayout>
 

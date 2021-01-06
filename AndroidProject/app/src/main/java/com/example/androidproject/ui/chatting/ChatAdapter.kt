@@ -12,7 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget
 import com.example.androidproject.R
-import java.util.ArrayList
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ChatAdapter (val context: Context, val arrayList: ArrayList<ChatModel>)
     :  RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -47,28 +48,57 @@ class ChatAdapter (val context: Context, val arrayList: ArrayList<ChatModel>)
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, i: Int) {
         preferences = context.getSharedPreferences("auto", Context.MODE_PRIVATE)
         //onCreateViewHolder에서 리턴받은 뷰홀더가 Holder라면 내채팅, item_my_chat의 뷰들을 초기화 해줌
+
+
         if (viewHolder is Holder) {
             (viewHolder as Holder).chat_Text?.setText(arrayList.get(i).script)
-            (viewHolder as Holder).chat_Time?.setText(arrayList.get(i).date_time)
+            (viewHolder as Holder).chat_Time?.setText(simpleDate(arrayList.get(i).date_time))
         }
         //onCreateViewHolder에서 리턴받은 뷰홀더가 Holder2라면 상대의 채팅, item_your_chat의 뷰들을 초기화 해줌
         else if(viewHolder is Holder2) {
-            when (arrayList.get(i).emotion){
-                "기쁨" -> Glide.with(context).load(R.drawable.happy).asGif().into((viewHolder as Holder2).chat_You_Image)
-                "신뢰" -> Glide.with(context).load(R.drawable.trust).asGif().into((viewHolder as Holder2).chat_You_Image)
-                "공포" -> Glide.with(context).load(R.drawable.horror).asGif().into((viewHolder as Holder2).chat_You_Image)
-                "기대" -> Glide.with(context).load(R.drawable.expectation).asGif().into((viewHolder as Holder2).chat_You_Image)
-                "놀라움" -> Glide.with(context).load(R.drawable.surprise).asGif().into((viewHolder as Holder2).chat_You_Image)
-                "슬픔" -> Glide.with(context).load(R.drawable.sad).asGif().into((viewHolder as Holder2).chat_You_Image)
-                "혐오" -> Glide.with(context).load(R.drawable.aversion).asGif().into((viewHolder as Holder2).chat_You_Image)
-                "분노" -> Glide.with(context).load(R.drawable.angry).asGif().into((viewHolder as Holder2).chat_You_Image)
-                else -> (viewHolder as Holder2).chat_You_Image?.setImageResource(R.mipmap.ic_launcher)
-            }
+                (viewHolder as Holder2).chat_You_Image?.setImageResource(R.drawable.profile)
             (viewHolder as Holder2).chat_You_Name?.setText(preferences.getString("second_name",""))
             (viewHolder as Holder2).chat_Text?.setText(arrayList.get(i).script)
-            (viewHolder as Holder2).chat_Time?.setText(arrayList.get(i).date_time)
+            (viewHolder as Holder2).chat_Time?.setText(simpleDate(arrayList.get(i).date_time))
         }
 
+    }
+
+    fun simpleDate (str : String) : String{
+        Log.e("str", str.substring(11,16))
+        var n : Int = if(str.substring(11,16).contains("-")) 1 else 2
+        var hh :Int =0
+        var mm :Int =0
+        var result:String = ""
+        when(n){
+            1 -> {
+                hh = str.substring(11,16).split("-")[0].toInt()
+                mm = str.substring(11,16).split("-")[1].toInt()
+                hh = if(hh>=12) hh -12 else hh
+                hh+=9
+                hh = if(hh>=12) hh -12 else hh
+                hh = if(hh ==0) hh +12 else hh
+            }
+            2 ->{
+                hh = str.substring(11,16).split(":")[0].toInt()
+                mm = str.substring(11,16).split(":")[1].toInt()
+                hh = if(hh>=12) hh -12 else hh
+                hh+=9
+                hh = if(hh>=12) hh -12 else hh
+                hh = if(hh ==0) hh +12 else hh
+            }
+        }
+
+        if(hh<10 && mm<10){
+            result = "0"+hh+":0"+mm
+        }else if (hh<10 && mm>=10){
+            result = "0"+hh+":"+mm
+        }else if(hh>=10 && mm <10){
+            result = ""+hh+":0"+mm
+        }else{
+            result = ""+hh+":"+mm
+        }
+        return result
     }
 
     //내가친 채팅 뷰홀더
