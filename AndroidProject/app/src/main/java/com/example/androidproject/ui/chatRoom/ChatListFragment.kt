@@ -31,7 +31,7 @@ class ChatListFragment : Fragment() {
                 container,
                 false
         )
-        var mAdapter = ChatListAdapter()
+        var mAdapter = ChatListAdapter(requireContext())
         var chatList = ObservableArrayList<ChatList>()
         bind.recyclerview.adapter = mAdapter
         bind.chatList = chatList

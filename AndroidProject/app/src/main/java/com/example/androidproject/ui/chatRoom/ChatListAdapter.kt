@@ -1,15 +1,18 @@
 package com.example.androidproject.ui.chatRoom
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidproject.BR
+import com.example.androidproject.MainActivity
 import com.example.androidproject.databinding.ItemChatListBinding
+import com.example.androidproject.ui.chat.ChatActivity
 
-class ChatListAdapter : RecyclerView.Adapter<ChatListAdapter.MyViewHolder>() {
+class ChatListAdapter(val context: Context) : RecyclerView.Adapter<ChatListAdapter.MyViewHolder>() {
     /*private var chatList: List<ChatList>? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatListViewHolder {
         val binding = DataBindingUtil.inflate<ItemChatListBinding>(
@@ -33,7 +36,6 @@ class ChatListAdapter : RecyclerView.Adapter<ChatListAdapter.MyViewHolder>() {
         return chatList!!.size
     }*/
     private var chatList: List<ChatList?>? = null
-    private lateinit var activity:Activity
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val binding: ItemChatListBinding =
@@ -47,12 +49,11 @@ class ChatListAdapter : RecyclerView.Adapter<ChatListAdapter.MyViewHolder>() {
         holder.itemView.setOnClickListener {
             Log.d("click", chat.name)
             Log.d("click", chat.lastChat)
-            /*val intent = Intent(activity, ChatRoomActivity::class.java)
-            intent.putExtra("fName", chat.name)
+            val intent = Intent(context, ChatActivity::class.java)
+            /*intent.putExtra("fName", chat.name)
             intent.putExtra("fImg", chat.lastChat)
-            intent.putExtra("fImg", chat.img)
-            activity.startActivity(intent)
-            activity.finish()*/
+            intent.putExtra("fImg", chat.img)*/
+            (context as MainActivity).startActivity(intent)
         }
     }
 

@@ -20,6 +20,7 @@
         android:theme="@style/Theme.AndroidProject"
         android:usesCleartextTraffic="true">
         <activity android:name=".SignupActivity" />
+        <activity android:name=".ui.chat.ChatActivity"/>
         <activity android:name=".LoginActivity">
         </activity>
         <activity android:name=".ui.chatting.ChattingActivity" />

@@ -1,58 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    xmlns:bind="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <data>
+        <variable
+            name="friendChat"
+            type="com.example.androidproject.ui.chat.ChatContent" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+        android:layout_height="70dp">
 
         <ImageView
             android:id="@+id/chat_You_Image"
-            android:layout_width="100dp"
-            android:layout_height="80dp"
-            android:layout_weight="1"
-            android:src="@drawable/ic_launcher_background" />
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            bind:imgUrl="@{friendChat.sender_profile}" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/chat_You_Name"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="10dp"
+            android:text="@{friendChat.sender_name}"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/chat_You_Image"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/chat_You_Name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="김xx"
-                android:layout_marginLeft="10dp"
-                android:textSize="20dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        <TextView
+            android:id="@+id/chat_Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:background="@drawable/layout_round"
+            android:padding="5dp"
+            android:text="@{friendChat.sender_chat}"
+            android:textSize="15sp"
+            app:layout_constraintStart_toEndOf="@+id/chat_You_Image"
+            app:layout_constraintTop_toBottomOf="@+id/chat_You_Name" />
 
-            <TextView
-                android:id="@+id/chat_Text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:layout_margin="10dp"
-                android:background="@drawable/layout_round"
-                android:gravity="center_vertical"
-                android:padding="5dp"
-                android:text="상대가 입력한 내용"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/chat_Time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:gravity="center_vertical"
-                android:text="시간" />
-        </LinearLayout>
-    </LinearLayout>
-</LinearLayout>
+        <TextView
+            android:id="@+id/chat_Time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginBottom="8dp"
+            android:text="@{friendChat.sender_chat_time}"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/chat_Text" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
