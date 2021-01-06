@@ -131,6 +131,7 @@ class ChattingActivity : AppCompatActivity() {
             val profile_image: String
             val date_time: String
             val email: String
+            val emotion : String
             try {
                 preferences = getSharedPreferences("auto", Context.MODE_PRIVATE)
                 Log.e("asdasd", data.toString())
@@ -139,9 +140,10 @@ class ChattingActivity : AppCompatActivity() {
                 profile_image = data.getString("profile_image")
                 date_time = data.getString("date_time")
                 email = data.getString("name")
+                emotion = data.getString("emotion")
 
-
-                val format = ChatModel(name, script, profile_image, date_time, email)
+                Log.e("emotion", emotion)
+                val format = ChatModel(name, script, profile_image, date_time, email, emotion)
                 mAdapter.addItem(format)
                 mAdapter.notifyDataSetChanged()
                 // 메세지가 올라올때마다 스크롤 최하단으로 보내기
@@ -251,6 +253,7 @@ class ChattingActivity : AppCompatActivity() {
                 var msg : String
                 var email : String
                 var date_time : String
+                var emotion : String
                 for (i in 0.. result!!.count-1){
                     name = result.chatLine.get(i).name
                     msg = result.chatLine.get(i).msg
@@ -262,7 +265,7 @@ class ChattingActivity : AppCompatActivity() {
                     Log.e("roomNAme", preferences.getString("roomName", "").toString())
                     Log.e("name", name)
 
-                    val format = ChatModel(name, msg, "profileImage", date_time, email)
+                    val format = ChatModel(name, msg, "profileImage", date_time, email, "없음")
                     mAdapter.addItem(format)
                     mAdapter.notifyDataSetChanged()
                     // 메세지가 올라올때마다 스크롤 최하단으로 보내기

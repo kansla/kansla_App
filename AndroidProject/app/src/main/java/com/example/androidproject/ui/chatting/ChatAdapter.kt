@@ -53,8 +53,17 @@ class ChatAdapter (val context: Context, val arrayList: ArrayList<ChatModel>)
         }
         //onCreateViewHolder에서 리턴받은 뷰홀더가 Holder2라면 상대의 채팅, item_your_chat의 뷰들을 초기화 해줌
         else if(viewHolder is Holder2) {
-                Glide.with(context).load(R.drawable.angry).into((viewHolder as Holder2).chat_You_Image)
-            //(viewHolder as Holder2).chat_You_Image?.setImageResource(R.mipmap.ic_launcher)
+            when (arrayList.get(i).emotion){
+                "기쁨" -> Glide.with(context).load(R.drawable.happy).asGif().into((viewHolder as Holder2).chat_You_Image)
+                "신뢰" -> Glide.with(context).load(R.drawable.trust).asGif().into((viewHolder as Holder2).chat_You_Image)
+                "공포" -> Glide.with(context).load(R.drawable.horror).asGif().into((viewHolder as Holder2).chat_You_Image)
+                "기대" -> Glide.with(context).load(R.drawable.expectation).asGif().into((viewHolder as Holder2).chat_You_Image)
+                "놀라움" -> Glide.with(context).load(R.drawable.surprise).asGif().into((viewHolder as Holder2).chat_You_Image)
+                "슬픔" -> Glide.with(context).load(R.drawable.sad).asGif().into((viewHolder as Holder2).chat_You_Image)
+                "혐오" -> Glide.with(context).load(R.drawable.aversion).asGif().into((viewHolder as Holder2).chat_You_Image)
+                "분노" -> Glide.with(context).load(R.drawable.angry).asGif().into((viewHolder as Holder2).chat_You_Image)
+                else -> (viewHolder as Holder2).chat_You_Image?.setImageResource(R.mipmap.ic_launcher)
+            }
             (viewHolder as Holder2).chat_You_Name?.setText(preferences.getString("second_name",""))
             (viewHolder as Holder2).chat_Text?.setText(arrayList.get(i).script)
             (viewHolder as Holder2).chat_Time?.setText(arrayList.get(i).date_time)
