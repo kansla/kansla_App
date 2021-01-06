@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget
 import com.example.androidproject.R
 import java.util.ArrayList
 
@@ -51,7 +53,8 @@ class ChatAdapter (val context: Context, val arrayList: ArrayList<ChatModel>)
         }
         //onCreateViewHolder에서 리턴받은 뷰홀더가 Holder2라면 상대의 채팅, item_your_chat의 뷰들을 초기화 해줌
         else if(viewHolder is Holder2) {
-            (viewHolder as Holder2).chat_You_Image?.setImageResource(R.mipmap.ic_launcher)
+                Glide.with(context).load(R.drawable.angry).into((viewHolder as Holder2).chat_You_Image)
+            //(viewHolder as Holder2).chat_You_Image?.setImageResource(R.mipmap.ic_launcher)
             (viewHolder as Holder2).chat_You_Name?.setText(preferences.getString("second_name",""))
             (viewHolder as Holder2).chat_Text?.setText(arrayList.get(i).script)
             (viewHolder as Holder2).chat_Time?.setText(arrayList.get(i).date_time)
