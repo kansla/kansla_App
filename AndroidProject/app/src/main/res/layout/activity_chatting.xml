@@ -6,7 +6,7 @@
     android:gravity="top"
     app:umanoDragView="@id/dragView"
     app:umanoScrollableView="@id/recyclerview"
-    app:umanoPanelHeight="500dp"
+    app:umanoPanelHeight="400dp"
     app:umanoOverlay="false"
     app:umanoShadowHeight="10dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
@@ -35,14 +35,14 @@
 
         <ImageView
             android:id="@+id/image_you"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
             android:layout_marginBottom="8dp"
             android:src="@drawable/profile"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/myChat"
@@ -64,10 +64,10 @@
 
         <ImageView
             android:id="@+id/image_me"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginRight="15dp"
             android:layout_marginBottom="8dp"
             android:src="@drawable/profile"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
@@ -105,7 +105,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="800dp"
+        android:layout_height="600dp"
         android:id="@+id/dragView"
         android:orientation="vertical">
 
