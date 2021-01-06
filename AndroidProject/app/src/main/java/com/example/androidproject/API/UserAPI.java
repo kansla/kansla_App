@@ -1,5 +1,6 @@
 package com.example.androidproject.API;
 
+import com.example.androidproject.DTO.AddFriend;
 import com.example.androidproject.DTO.ChatRoomDTO;
 import com.example.androidproject.DTO.FriendsDTO;
 import com.example.androidproject.DTO.LoadMsgDTO;
@@ -29,4 +30,6 @@ public interface UserAPI {
     Call<UserDTO> find_password(@Body UserDTO userDTO);
     @POST("/chat_load")
     Call<LoadMsgDTO> chat_load(@Body LoadMsgDTO loadMsgDTO);
+    @POST("/friend/friend_req")
+    Call<AddFriend> friend_add(@Body AddFriend addFriend);
 }

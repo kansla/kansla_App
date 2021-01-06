@@ -18,7 +18,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidProject"
         android:usesCleartextTraffic="true">
-        <activity android:name=".FindPWDActivity"></activity>
+        <activity android:name=".AddFriendActivity"></activity>
+        <activity android:name=".FindPWDActivity" />
         <activity android:name=".InfoModifyActivity" />
         <activity android:name=".ManualActivity" />
         <activity android:name=".InfomationActivity" />
@@ -33,7 +34,7 @@
         <activity android:name=".ui.chatting.ChattingActivity" />
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name"></activity>
+            android:label="@string/app_name" />
     </application>
 
 </manifest>
