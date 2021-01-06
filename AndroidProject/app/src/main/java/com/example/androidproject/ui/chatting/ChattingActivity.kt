@@ -166,7 +166,7 @@ class ChattingActivity : AppCompatActivity() {
                         "슬픔" -> Glide.with(applicationContext).load(R.drawable.sad).asGif().into(image_you)
                         "혐오" -> Glide.with(applicationContext).load(R.drawable.aversion).asGif().into(image_you)
                         "분노" -> Glide.with(applicationContext).load(R.drawable.angry).asGif().into(image_you)
-                        else -> (applicationContext as ChatAdapter.Holder2).chat_You_Image?.setImageResource(R.mipmap.ic_launcher)
+                        else -> image_you.setImageResource(R.mipmap.ic_launcher)
                     }
                 }
                 else{
@@ -180,7 +180,7 @@ class ChattingActivity : AppCompatActivity() {
                         "슬픔" -> Glide.with(applicationContext).load(R.drawable.sad).asGif().into(image_me)
                         "혐오" -> Glide.with(applicationContext).load(R.drawable.aversion).asGif().into(image_me)
                         "분노" -> Glide.with(applicationContext).load(R.drawable.angry).asGif().into(image_me)
-                        else -> (applicationContext as ChatAdapter.Holder2).chat_You_Image?.setImageResource(R.mipmap.ic_launcher)
+                        else -> image_me.setImageResource(R.mipmap.ic_launcher)
                     }
                 }
 
