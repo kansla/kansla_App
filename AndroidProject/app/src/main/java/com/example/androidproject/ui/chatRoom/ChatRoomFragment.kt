@@ -63,7 +63,7 @@ class ChatRoomFragment : Fragment() {
                 var name : String
                 var msg : String
                 var email : String
-                for (i in 0.. result?.msg!!.size-1){
+                for (i in 0..result?.count!! -1){
                     name = result.tName.get(i).name
                     msg = result.msg.get(i).msg
                     email = result.tName.get(i).email

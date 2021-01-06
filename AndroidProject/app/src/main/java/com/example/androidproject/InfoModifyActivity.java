@@ -209,7 +209,7 @@ public class InfoModifyActivity extends AppCompatActivity implements View.OnClic
     private UserModifyDTO getData() {
         auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
         UserModifyDTO data = new UserModifyDTO(strOrgEmail,
-                strEmail, strName, strNewPW, tvBirth.getText().toString(), strImage, strContents);
+                strEmail, strName, strNewPW, tvBirth.getText().toString(), "example", strContents);
 
         Log.e("log", data.toString());
 
@@ -232,11 +232,6 @@ public class InfoModifyActivity extends AppCompatActivity implements View.OnClic
         strContents = auto.getString("inputContents","null");
         strOrgEmail = auto.getString("inputId","null");
         tvBirth.setText(auto.getString("inputBirth","null").substring(0,10));
-
-        Log.e("base64", auto.getString("inputBase64", "null"));
-        ByteArrayInputStream bais = new ByteArrayInputStream(Base64.decode(auto.getString("inputBase64", "null"), Base64.NO_WRAP));
-        Bitmap bitmap = BitmapFactory.decodeStream(bais);
-        profile.setImageBitmap(bitmap);
 
         editName.setText(strName);
         editContents.setText(strContents);
