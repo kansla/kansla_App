@@ -83,7 +83,9 @@ public class FriendFragment extends Fragment {
                 adapter.clearItem();
                 try {
                     for (int i=0; i<result.getCount(); i++){
-                        adapter.addItem(result.getFriends().get(i).getName(), result.getFriends().get(i).getStatus_msg());
+                        adapter.addItem(result.getFriends().get(i).getName(),
+                                result.getFriends().get(i).getStatus_msg(),
+                                result.getFriends().get(i).getEmail());
                     }
                 }catch (Exception e){
                     Log.e("친구", "없음");
@@ -104,6 +106,9 @@ public class FriendFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CustomDialogFragment dialog = CustomDialogFragment.newInstance("채팅을 시작하시겠습니까?",2);
                 dialog.show(getFragmentManager(), "dialog");
+                SharedPreferences.Editor editor = auto.edit();
+                editor.putString("second_email", adapter.getItem(position).getEmali());
+                editor.apply();
             }
         });
 

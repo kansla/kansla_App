@@ -55,7 +55,7 @@ class ChatListAdapter : RecyclerView.Adapter<ChatListAdapter.MyViewHolder>() {
             editor.putString("second_email", chat.email)
             editor.putString("second_name", chat.name)
             editor.apply()
-            Log.e("gg" , preferences.getString("second_email","")!!)
+            Log.e("gg" , preferences.getString("second_email","").toString())
             /*intent.putExtra("fName", chat.name)
             intent.putExtra("fImg", chat.lastChat)
             intent.putExtra("fImg", chat.img)*/

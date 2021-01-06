@@ -11,7 +11,16 @@ public class FriendItem {
     private byte[] data;
     @SerializedName("body")
     private String body;
+    @SerializedName("email")
+    private String emali;
 
+    public String getEmali() {
+        return emali;
+    }
+
+    public void setEmali(String emali) {
+        this.emali = emali;
+    }
 
     public String getName() {
         return name;

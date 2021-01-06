@@ -32,7 +32,7 @@ public class FriendAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public FriendItem getItem(int position) {
         return friendItemArrayList.get(position);
     }
 
@@ -61,10 +61,11 @@ public class FriendAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void addItem(String strName, String strContents){
+    public void addItem(String strName, String strContents, String strEmail){
         FriendItem item = new FriendItem();
         item.setName(strName);
         item.setContents(strContents);
+        item.setEmali(strEmail);
 
         friendItemArrayList.add(item);
     }
@@ -72,4 +73,5 @@ public class FriendAdapter extends BaseAdapter {
     public void clearItem(){
         friendItemArrayList.clear();
     }
+
 }

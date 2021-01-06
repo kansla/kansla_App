@@ -32,4 +32,6 @@ public interface UserAPI {
     Call<LoadMsgDTO> chat_load(@Body LoadMsgDTO loadMsgDTO);
     @POST("/friend/friend_req")
     Call<AddFriend> friend_add(@Body AddFriend addFriend);
+    @POST("/chat_start")
+    Call<AddFriend> chat_start(@Body AddFriend addFriend);
 }
