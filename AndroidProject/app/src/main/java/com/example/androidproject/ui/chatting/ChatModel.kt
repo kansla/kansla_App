@@ -8,4 +8,7 @@ class ChatModel(
     val email: String,
     val emotion: String
 ){
+    override fun toString(): String {
+        return "ChatModel(name='$name', script='$script', profile_image='$profile_image', date_time='$date_time', email='$email', emotion='$emotion')"
+    }
 }

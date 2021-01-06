@@ -2,14 +2,17 @@ package com.example.androidproject.ui.chatting
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.androidproject.API.RetrofitHelper
 import com.example.androidproject.DTO.ChatRoomDTO
 import com.example.androidproject.DTO.LoadMsgDTO
@@ -18,6 +21,7 @@ import com.example.androidproject.ui.chatRoom.ChatList
 import com.github.nkzawa.emitter.Emitter
 import com.github.nkzawa.socketio.client.IO
 import com.github.nkzawa.socketio.client.Socket
+import kotlinx.android.synthetic.main.activity_chatting.*
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
@@ -30,6 +34,8 @@ class ChattingActivity : AppCompatActivity() {
     internal lateinit var preferences: SharedPreferences
     private lateinit var chating_Text: EditText
     private lateinit var chat_Send_Button: Button
+    private lateinit var image_you:ImageView
+    private lateinit var image_me: ImageView
     lateinit var chat_recyclerview : RecyclerView
 
 
@@ -68,6 +74,8 @@ class ChattingActivity : AppCompatActivity() {
         chat_Send_Button = findViewById<Button>(R.id.send_btn)
         chating_Text = findViewById<EditText>(R.id.editChat)
 
+        image_me = findViewById(R.id.image_me)
+        image_you = findViewById(R.id.image_you)
 
         if (savedInstanceState != null) {
             hasConnection = savedInstanceState.getBoolean("hasConnection")
@@ -146,6 +154,37 @@ class ChattingActivity : AppCompatActivity() {
                 val format = ChatModel(name, script, profile_image, date_time, email, emotion)
                 mAdapter.addItem(format)
                 mAdapter.notifyDataSetChanged()
+
+                if(email.equals(preferences.getString("second_email", "")) || name.equals(preferences.getString("second_email", ""))){
+                    Log.e("image_you", email+" : "+ preferences.getString("second_email","")+" : "+emotion)
+                    when (emotion){
+                        "기쁨" -> Glide.with(applicationContext).load(R.drawable.happy).asGif().into(image_you)
+                        "신뢰" -> Glide.with(applicationContext).load(R.drawable.trust).asGif().into(image_you)
+                        "공포" -> Glide.with(applicationContext).load(R.drawable.horror).asGif().into(image_you)
+                        "기대" -> Glide.with(applicationContext).load(R.drawable.expectation).asGif().into(image_you)
+                        "놀라움" -> Glide.with(applicationContext).load(R.drawable.surprise).asGif().into(image_you)
+                        "슬픔" -> Glide.with(applicationContext).load(R.drawable.sad).asGif().into(image_you)
+                        "혐오" -> Glide.with(applicationContext).load(R.drawable.aversion).asGif().into(image_you)
+                        "분노" -> Glide.with(applicationContext).load(R.drawable.angry).asGif().into(image_you)
+                        else -> (applicationContext as ChatAdapter.Holder2).chat_You_Image?.setImageResource(R.mipmap.ic_launcher)
+                    }
+                }
+                else{
+                    Log.e("image_me", email+" : "+ preferences.getString("second_email","")+" : "+emotion)
+                    when (emotion){
+                        "기쁨" -> Glide.with(applicationContext).load(R.drawable.happy).asGif().into(image_me)
+                        "신뢰" -> Glide.with(applicationContext).load(R.drawable.trust).asGif().into(image_me)
+                        "공포" -> Glide.with(applicationContext).load(R.drawable.horror).asGif().into(image_me)
+                        "기대" -> Glide.with(applicationContext).load(R.drawable.expectation).asGif().into(image_me)
+                        "놀라움" -> Glide.with(applicationContext).load(R.drawable.surprise).asGif().into(image_me)
+                        "슬픔" -> Glide.with(applicationContext).load(R.drawable.sad).asGif().into(image_me)
+                        "혐오" -> Glide.with(applicationContext).load(R.drawable.aversion).asGif().into(image_me)
+                        "분노" -> Glide.with(applicationContext).load(R.drawable.angry).asGif().into(image_me)
+                        else -> (applicationContext as ChatAdapter.Holder2).chat_You_Image?.setImageResource(R.mipmap.ic_launcher)
+                    }
+                }
+
+
                 // 메세지가 올라올때마다 스크롤 최하단으로 보내기
                 chat_recyclerview.scrollToPosition(((chat_recyclerview.adapter?.itemCount ?: Int) as Int) - 1)
                 Log.e("new me",name )
@@ -226,7 +265,6 @@ class ChattingActivity : AppCompatActivity() {
         }
         Log.e("챗룸", "sendMessage: 1" + mSocket.emit("chat message", jsonObject))
         Log.e("sendmmm", preferences.getString("inputId", "")!!)
-        
     }
 
     fun leave(){
@@ -241,8 +279,8 @@ class ChattingActivity : AppCompatActivity() {
     }
 
     fun loadMessage(){
-        preferences = getSharedPreferences("auto", Context.MODE_PRIVATE)
-        val editor = preferences!!.edit()
+        preferences = getSharedPreferences("auto", MODE_PRIVATE)
+        val editor = preferences.edit()
         var room : LoadMsgDTO = LoadMsgDTO(preferences.getString("inputId", ""), preferences.getString("second_email",""))
         var call: Call<LoadMsgDTO>? = RetrofitHelper.getApiService().chat_load(room)
         call?.enqueue(object : Callback<LoadMsgDTO> {
@@ -253,17 +291,16 @@ class ChattingActivity : AppCompatActivity() {
                 var msg : String
                 var email : String
                 var date_time : String
-                var emotion : String
+
+                editor.putString("roomName", result!!.room)
+                editor.apply()
+
+                Log.e("result", preferences.getString("roomName", "0")!!)
                 for (i in 0.. result!!.count-1){
                     name = result.chatLine.get(i).name
                     msg = result.chatLine.get(i).msg
                     date_time = result.chatLine.get(i).date
                     email = preferences.getString("second_email","").toString()
-                    editor.putString("roomName", result.room.toString())
-                    editor.apply()
-
-                    Log.e("roomNAme", preferences.getString("roomName", "").toString())
-                    Log.e("name", name)
 
                     val format = ChatModel(name, msg, "profileImage", date_time, email, "없음")
                     mAdapter.addItem(format)
@@ -274,8 +311,7 @@ class ChattingActivity : AppCompatActivity() {
                 val userId = JSONObject()
                 try {
                     userId.put("room", preferences.getString("roomName", "0"))
-                    roomNumber = preferences.getString("roomName", "").toString()
-                    Log.e("roomNAMe", roomNumber)
+                    roomNumber = preferences.getString("roomName", "")!!
                     Log.e("username",preferences.getString("inputId", "") + " Connected")
 
                     //socket.emit은 메세지 전송임

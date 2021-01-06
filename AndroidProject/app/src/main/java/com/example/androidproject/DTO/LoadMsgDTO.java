@@ -1,5 +1,7 @@
 package com.example.androidproject.DTO;
 
+import android.util.Log;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -12,7 +14,7 @@ public class LoadMsgDTO {
     @SerializedName("count")
     private int count;
     @SerializedName("room")
-    private int room;
+    private String room;
     @SerializedName("chat_line")
     private List<ChatLine> chatLine;
 
@@ -98,11 +100,11 @@ public class LoadMsgDTO {
         this.count = count;
     }
 
-    public int getRoom() {
+    public String getRoom() {
         return room;
     }
 
-    public void setRoom(int room) {
+    public void setRoom(String room) {
         this.room = room;
     }
 
