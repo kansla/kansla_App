@@ -2,37 +2,52 @@ package com.example.androidproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.regex.Matcher;
+import com.example.androidproject.API.RetrofitHelper;
+import com.example.androidproject.DTO.ResponseLogin;
+import com.example.androidproject.DTO.UserDTO;
+
 import java.util.regex.Pattern;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener{
 
-    EditText editId, editPW, editRePW, editBirth;
-    TextView errId, errPW, errRePW, errBirth;
+    EditText editId, editPW, editRePW, editName;
+    TextView errId, errPW, errRePW, errBirth, tvBirth;
     Button btnSignup, btnCheck;
 
-    String strId, strPW, strRePW, strBirth;
+    String strId, strPW, strRePW, strBirth, strName;
 
     boolean isAbleId = false;
+
+    int y=0, m=0, d=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+        setTitle("회원가입");
 
         init();
 
         btnSignup.setOnClickListener(this);
         btnCheck.setOnClickListener(this);
+        tvBirth.setOnClickListener(this);
 
     }
 
@@ -43,7 +58,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 strId = editId.getText().toString();
                 strPW = editPW.getText().toString();
                 strRePW = editRePW.getText().toString();
-                strBirth = editBirth.getText().toString();
+                strBirth = tvBirth.getText().toString();
+                strName = editName.getText().toString();
 
                 if(strId.equals("") || strPW.equals("") || strRePW.equals("") || strBirth.equals("")){
                     if(strId.equals("")){
@@ -104,10 +120,27 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                         errPW.setVisibility(View.GONE);
                         errBirth.setVisibility(View.GONE);
                         //회원가입 하기
-                        Toast.makeText(this, "회원가입 성공", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent);
-                        finish();
+
+                        UserDTO user = getData();
+                        Call<UserDTO> call = RetrofitHelper.getApiService().signup(user);
+                        call.enqueue(new Callback<UserDTO>() {
+                            @Override
+                            public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
+                                if(response.isSuccessful()){
+                                    Toast.makeText(SignupActivity.this, "회원가입 성공", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<UserDTO> call, Throwable t) {
+                                Log.e("실패", t.getMessage());
+                            }
+                        });
+
+
                     }
                 }
                 break;
@@ -127,33 +160,86 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 else{
                     errId.setVisibility(View.GONE);
                     // 중복확인
-                    Log.e("호호","이메일 맞아");
-                    editId.setClickable(false);
+                    UserDTO user = new UserDTO(strId);
+                    Call<UserDTO> call = RetrofitHelper.getApiService().check_email(user);
+                    call.enqueue(new Callback<UserDTO>() {
+                        @Override
+                        public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
+                            if(response.isSuccessful()){
+                                int result = response.code();
+                                if(result == 200){
+                                    errId.setVisibility(View.GONE);
+                                    Toast.makeText(getApplicationContext(), strId+"는 사용가능한 아이디 입니다.", Toast.LENGTH_SHORT).show();
+                                    editId.setEnabled(false);
+                                    isAbleId = true;
+                                }
+                                else if(result == 204){
+                                    errId.setText("중복되는 아이디 입니다.");
+                                    errId.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        }
 
-                    if(true){
-                        errId.setVisibility(View.GONE);
-                        Toast.makeText(this, strId+"는 사용가능한 아이디 입니다.", Toast.LENGTH_SHORT).show();
-                        isAbleId = true;
-                    }
-                    else{
-                        errId.setText("중복되는 아이디 입니다.");
-                        errId.setVisibility(View.VISIBLE);
-                    }
+                        @Override
+                        public void onFailure(Call<UserDTO> call, Throwable t) {
+                            Log.e("err", "통신 안됨: "+t.getMessage());
+                        }
+                    });
                 }
                 break;
+            case R.id.tvBirth:
+                DatePickerDialog datePickerDialog = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        y = year;
+                        m = month +1;
+                        d = dayOfMonth;
+
+                        if(m<10 && d<10){
+                            tvBirth.setText(y+"-0"+m+"-0"+d);
+                        }
+                        else if(m<10 && d>=10){
+                            tvBirth.setText(y+"-0"+m+"-"+d);
+                        }
+                        else if(m>=10 && d<10){
+                            tvBirth.setText(y+"-"+m+"-0"+d);
+                        }
+                        else{
+                            tvBirth.setText(y+"-"+m+"-"+d);
+                        }
+
+                    }
+                },y,m-1,d);
+
+                datePickerDialog.getDatePicker().setCalendarViewShown(false);
+                datePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                datePickerDialog.setMessage("생일을 선택해주세요");
+                datePickerDialog.setCancelable(false);
+                datePickerDialog.show();
+                break;
         }
+    }
+
+    private UserDTO getData() {
+        UserDTO data = new UserDTO(strId, strPW, strName, strBirth);
+        return data;
     }
 
     void init(){
         editId = findViewById(R.id.editId);
         editPW = findViewById(R.id.editPW);
         editRePW =findViewById(R.id.editRePW);
-        editBirth = findViewById(R.id.editBirth);
+        tvBirth = findViewById(R.id.tvBirth);
         errId = findViewById(R.id.errId);
         errPW = findViewById(R.id.errPW);
         errRePW =findViewById(R.id.errRePW);
         errBirth = findViewById(R.id.errBirth);
         btnSignup = findViewById(R.id.btnSignup);
         btnCheck = findViewById(R.id.btnCheck);
+        editName = findViewById(R.id.editName);
+
+        y=2000;
+        m=1;
+        d=1;
     }
 }

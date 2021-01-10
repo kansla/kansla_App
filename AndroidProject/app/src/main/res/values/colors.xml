@@ -8,6 +8,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="main_color">#EB9255</color>
+    <color name="main_color">#697486</color>
     <color name="red">#FF0000</color>
+    <color name="charcoal">#697486</color>
+    <color name="brown">#BFA79B</color>
+    <color name="peach">#FADDCD</color>
 </resources>

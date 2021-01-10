@@ -9,8 +9,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget
 import com.example.androidproject.R
-import java.util.ArrayList
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ChatAdapter (val context: Context, val arrayList: ArrayList<ChatModel>)
     :  RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -43,19 +46,59 @@ class ChatAdapter (val context: Context, val arrayList: ArrayList<ChatModel>)
     }
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, i: Int) {
+        preferences = context.getSharedPreferences("auto", Context.MODE_PRIVATE)
         //onCreateViewHolder에서 리턴받은 뷰홀더가 Holder라면 내채팅, item_my_chat의 뷰들을 초기화 해줌
+
+
         if (viewHolder is Holder) {
             (viewHolder as Holder).chat_Text?.setText(arrayList.get(i).script)
-            (viewHolder as Holder).chat_Time?.setText(arrayList.get(i).date_time)
+            (viewHolder as Holder).chat_Time?.setText(simpleDate(arrayList.get(i).date_time))
         }
         //onCreateViewHolder에서 리턴받은 뷰홀더가 Holder2라면 상대의 채팅, item_your_chat의 뷰들을 초기화 해줌
         else if(viewHolder is Holder2) {
-            (viewHolder as Holder2).chat_You_Image?.setImageResource(R.mipmap.ic_launcher)
-            (viewHolder as Holder2).chat_You_Name?.setText(arrayList.get(i).name)
+                (viewHolder as Holder2).chat_You_Image?.setImageResource(R.drawable.profile)
+            (viewHolder as Holder2).chat_You_Name?.setText(preferences.getString("second_name",""))
             (viewHolder as Holder2).chat_Text?.setText(arrayList.get(i).script)
-            (viewHolder as Holder2).chat_Time?.setText(arrayList.get(i).date_time)
+            (viewHolder as Holder2).chat_Time?.setText(simpleDate(arrayList.get(i).date_time))
         }
 
+    }
+
+    fun simpleDate (str : String) : String{
+        Log.e("str", str.substring(11,16))
+        var n : Int = if(str.substring(11,16).contains("-")) 1 else 2
+        var hh :Int =0
+        var mm :Int =0
+        var result:String = ""
+        when(n){
+            1 -> {
+                hh = str.substring(11,16).split("-")[0].toInt()
+                mm = str.substring(11,16).split("-")[1].toInt()
+                hh = if(hh>=12) hh -12 else hh
+                hh+=9
+                hh = if(hh>=12) hh -12 else hh
+                hh = if(hh ==0) hh +12 else hh
+            }
+            2 ->{
+                hh = str.substring(11,16).split(":")[0].toInt()
+                mm = str.substring(11,16).split(":")[1].toInt()
+                hh = if(hh>=12) hh -12 else hh
+                hh+=9
+                hh = if(hh>=12) hh -12 else hh
+                hh = if(hh ==0) hh +12 else hh
+            }
+        }
+
+        if(hh<10 && mm<10){
+            result = "0"+hh+":0"+mm
+        }else if (hh<10 && mm>=10){
+            result = "0"+hh+":"+mm
+        }else if(hh>=10 && mm <10){
+            result = ""+hh+":0"+mm
+        }else{
+            result = ""+hh+":"+mm
+        }
+        return result
     }
 
     //내가친 채팅 뷰홀더
@@ -78,12 +121,12 @@ class ChatAdapter (val context: Context, val arrayList: ArrayList<ChatModel>)
     }
 
     override fun getItemViewType(position: Int): Int {//여기서 뷰타입을 1, 2로 바꿔서 지정해줘야 내채팅 너채팅을 바꾸면서 쌓을 수 있음
-        preferences = context.getSharedPreferences("USERSIGN", Context.MODE_PRIVATE)
+        preferences = context.getSharedPreferences("auto", Context.MODE_PRIVATE)
 
         //내 아이디와 arraylist의 name이 같다면 내꺼 아니면 상대꺼
         Log.e("test", arrayList.get(position).name)
 
-        return if (arrayList.get(position).name == preferences.getString("name","")) {
+        return if (arrayList.get(position).email == preferences.getString("inputId","") || arrayList.get(position).name == preferences.getString("inputId","")) {
             1
         } else {
             2

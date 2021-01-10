@@ -7,22 +7,43 @@
     tools:context=".SignupActivity">
 
     <EditText
+        android:id="@+id/editName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginLeft="36dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginRight="36dp"
+        android:background="@drawable/edit_box"
+        android:ems="10"
+        android:hint="이름"
+        android:paddingLeft="10dp"
+        android:fontFamily="@font/appleneob"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
         android:id="@+id/editId"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
         android:layout_marginLeft="36dp"
-        android:layout_marginTop="51dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="5dp"
         android:layout_marginRight="5dp"
         android:background="@drawable/edit_box"
         android:ems="10"
         android:hint="아이디"
+        android:textSize="18dp"
+        android:fontFamily="@font/appleneob"
         android:inputType="textPersonName"
         android:paddingLeft="10dp"
         app:layout_constraintEnd_toStartOf="@+id/btnCheck"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/editName" />
 
     <EditText
         android:id="@+id/editPW"
@@ -36,12 +57,16 @@
         android:background="@drawable/edit_box"
         android:ems="10"
         android:hint="비밀번호"
+        android:textSize="18dp"
         android:inputType="textPassword"
         android:paddingLeft="10dp"
+        android:fontFamily="@font/appleneob"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/errId" />
+
+
 
     <EditText
         android:id="@+id/editRePW"
@@ -55,15 +80,17 @@
         android:background="@drawable/edit_box"
         android:ems="10"
         android:hint="비밀번호 확인"
+        android:textSize="18dp"
         android:inputType="textPassword"
         android:paddingLeft="10dp"
+        android:fontFamily="@font/appleneob"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/errPW" />
 
-    <EditText
-        android:id="@+id/editBirth"
+    <TextView
+        android:id="@+id/tvBirth"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
@@ -72,10 +99,11 @@
         android:layout_marginEnd="36dp"
         android:layout_marginRight="36dp"
         android:background="@drawable/edit_box"
-        android:ems="10"
         android:hint="생년월일"
-        android:inputType="textPersonName"
+        android:textSize="18dp"
+        android:gravity="center_vertical"
         android:paddingLeft="10dp"
+        android:fontFamily="@font/appleneob"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -150,18 +178,18 @@
         android:textSize="12dp"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editBirth" />
+        app:layout_constraintTop_toBottomOf="@+id/tvBirth" />
 
     <Button
         android:id="@+id/btnCheck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="51dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="36dp"
         android:layout_marginRight="36dp"
         android:fontFamily="@font/appleneol"
         android:text="중복확인"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/editName" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,26 +12,31 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_main2"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_main2_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidProject"
         android:usesCleartextTraffic="true">
-        <activity android:name=".SignupActivity" />
-        <activity android:name=".LoginActivity">
-        </activity>
-        <activity android:name=".ui.chatting.ChattingActivity" />
-
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name" >
+        <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".AddFriendActivity" />
+        <activity android:name=".FindPWDActivity" />
+        <activity android:name=".InfoModifyActivity" />
+        <activity android:name=".ManualActivity" />
+        <activity android:name=".InfomationActivity" />
+        <activity android:name=".SignupActivity" />
+        <activity android:name=".LoginActivity">
+        </activity>
+        <activity android:name=".ui.chatting.ChattingActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" />
     </application>
 
 </manifest>

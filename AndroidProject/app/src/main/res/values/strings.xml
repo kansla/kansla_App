@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">Android Project</string>
+    <string name="app_name">känsla</string>
     <string name="title_friend">친구</string>
     <string name="title_chatting_room">채팅</string>
     <string name="title_setting">설정</string>
+    <string name="todo">TODO</string>
 </resources>
