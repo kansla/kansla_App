@@ -1,4 +1,5 @@
 # kansla_App
+감정분석 채팅앱
 
 
 ## COMMIT 규칙
